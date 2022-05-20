@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		63AC7DD12837313C00027B76 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 63AC7DD02837313C00027B76 /* RxSwift */; };
+		63B9C4632837D64600220FFF /* FruitRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C4622837D64600220FFF /* FruitRepository.swift */; };
+		63B9C4652837D66F00220FFF /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C4642837D66F00220FFF /* Fruit.swift */; };
 		63BE4E5C28368D1700E9608C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5B28368D1700E9608C /* AppDelegate.swift */; };
 		63BE4E5E28368D1700E9608C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5D28368D1700E9608C /* SceneDelegate.swift */; };
 		63BE4E6028368D1700E9608C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5F28368D1700E9608C /* ViewController.swift */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		63B9C4622837D64600220FFF /* FruitRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FruitRepository.swift; sourceTree = "<group>"; };
+		63B9C4642837D66F00220FFF /* Fruit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fruit.swift; sourceTree = "<group>"; };
 		63BE4E5828368D1700E9608C /* JuiceMaker-MVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JuiceMaker-MVVM.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		63BE4E5B28368D1700E9608C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63BE4E5D28368D1700E9608C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +43,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		63B9C4662837DE8900220FFF /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				63B9C4622837D64600220FFF /* FruitRepository.swift */,
+				63B9C4642837D66F00220FFF /* Fruit.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
 		63BE4E4F28368D1700E9608C = {
 			isa = PBXGroup;
 			children = (
@@ -58,6 +71,7 @@
 		63BE4E5A28368D1700E9608C /* JuiceMaker-MVVM */ = {
 			isa = PBXGroup;
 			children = (
+				63B9C4662837DE8900220FFF /* Repository */,
 				63BE4E5B28368D1700E9608C /* AppDelegate.swift */,
 				63BE4E5D28368D1700E9608C /* SceneDelegate.swift */,
 				63BE4E5F28368D1700E9608C /* ViewController.swift */,
@@ -147,8 +161,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63B9C4652837D66F00220FFF /* Fruit.swift in Sources */,
 				63BE4E6028368D1700E9608C /* ViewController.swift in Sources */,
 				63BE4E5C28368D1700E9608C /* AppDelegate.swift in Sources */,
+				63B9C4632837D64600220FFF /* FruitRepository.swift in Sources */,
 				63BE4E5E28368D1700E9608C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
