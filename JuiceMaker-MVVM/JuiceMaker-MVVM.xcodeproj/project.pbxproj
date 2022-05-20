@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63AC7DD12837313C00027B76 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 63AC7DD02837313C00027B76 /* RxSwift */; };
 		63BE4E5C28368D1700E9608C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5B28368D1700E9608C /* AppDelegate.swift */; };
 		63BE4E5E28368D1700E9608C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5D28368D1700E9608C /* SceneDelegate.swift */; };
 		63BE4E6028368D1700E9608C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5F28368D1700E9608C /* ViewController.swift */; };
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63AC7DD12837313C00027B76 /* RxSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +85,9 @@
 			dependencies = (
 			);
 			name = "JuiceMaker-MVVM";
+			packageProductDependencies = (
+				63AC7DD02837313C00027B76 /* RxSwift */,
+			);
 			productName = "JuiceMaker-MVVM";
 			productReference = 63BE4E5828368D1700E9608C /* JuiceMaker-MVVM.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +116,10 @@
 				Base,
 			);
 			mainGroup = 63BE4E4F28368D1700E9608C;
+			packageReferences = (
+				63BE4E6F28368F9900E9608C /* XCRemoteSwiftPackageReference "RxSwift" */,
+				63AC7DCF2837313C00027B76 /* XCRemoteSwiftPackageReference "RxSwift" */,
+			);
 			productRefGroup = 63BE4E5928368D1700E9608C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -202,6 +211,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_TESTING_SEARCH_PATHS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -216,7 +226,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -262,6 +272,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTING_SEARCH_PATHS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -270,7 +281,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -358,6 +370,33 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		63AC7DCF2837313C00027B76 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		63BE4E6F28368F9900E9608C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		63AC7DD02837313C00027B76 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63BE4E6F28368F9900E9608C /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 63BE4E5028368D1700E9608C /* Project object */;
 }
