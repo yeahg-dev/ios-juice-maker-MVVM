@@ -406,6 +406,19 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EKE-oP-Zm3">
+                                <rect key="frame" x="-12" y="0.0" width="896" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="과일 보유량 수정" id="Nug-fr-vYV">
+                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="er5-mM-uIx">
+                                            <connections>
+                                                <action selector="tappedDoneButton:" destination="yKR-jc-ncn" id="Imv-P3-BIR"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="1SS-kc-liu"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>

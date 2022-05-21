@@ -33,7 +33,7 @@ class FruitStockViewController: UIViewController {
         bindUI()
         fruitStockViewModel.loadStock()
     }
-    
+  
     func bindUI() {
         self.output.strawberryStockObservable
             .subscribe(onNext: {[weak self] stock in
@@ -60,4 +60,9 @@ class FruitStockViewController: UIViewController {
                 self?.bananaStockLabel?.text = stock})
             .disposed(by: disposeBag)
     }
+    
+    @IBAction func tappedDoneButton(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
+    
 }
