@@ -104,7 +104,6 @@
 			children = (
 				63BE4E5B28368D1700E9608C /* AppDelegate.swift */,
 				63BE4E5D28368D1700E9608C /* SceneDelegate.swift */,
-				63BE4E6928368D1A00E9608C /* Info.plist */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -128,6 +127,7 @@
 		63BE4E5A28368D1700E9608C /* JuiceMaker-MVVM */ = {
 			isa = PBXGroup;
 			children = (
+				63BE4E6928368D1A00E9608C /* Info.plist */,
 				63B9C478283946B200220FFF /* App */,
 				63B9C47128387B2A00220FFF /* View */,
 				63B9C46E28386F4200220FFF /* ViewModel */,
