@@ -13,6 +13,8 @@
 		63B9C46B2837DFE600220FFF /* FruitJuice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C46A2837DFE600220FFF /* FruitJuice.swift */; };
 		63B9C46D28386C4900220FFF /* JuiceMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C46C28386C4900220FFF /* JuiceMaker.swift */; };
 		63B9C4702838710400220FFF /* JuiceMakerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C46F2838710400220FFF /* JuiceMakerViewModel.swift */; };
+		63B9C4732839347900220FFF /* FruitStockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C4722839347900220FFF /* FruitStockViewController.swift */; };
+		63B9C4752839348C00220FFF /* FruitStockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C4742839348C00220FFF /* FruitStockViewModel.swift */; };
 		63BE4E5C28368D1700E9608C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5B28368D1700E9608C /* AppDelegate.swift */; };
 		63BE4E5E28368D1700E9608C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5D28368D1700E9608C /* SceneDelegate.swift */; };
 		63BE4E6028368D1700E9608C /* JuiceMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5F28368D1700E9608C /* JuiceMakerViewController.swift */; };
@@ -27,6 +29,8 @@
 		63B9C46A2837DFE600220FFF /* FruitJuice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FruitJuice.swift; sourceTree = "<group>"; };
 		63B9C46C28386C4900220FFF /* JuiceMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuiceMaker.swift; sourceTree = "<group>"; };
 		63B9C46F2838710400220FFF /* JuiceMakerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuiceMakerViewModel.swift; sourceTree = "<group>"; };
+		63B9C4722839347900220FFF /* FruitStockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FruitStockViewController.swift; sourceTree = "<group>"; };
+		63B9C4742839348C00220FFF /* FruitStockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FruitStockViewModel.swift; sourceTree = "<group>"; };
 		63BE4E5828368D1700E9608C /* JuiceMaker-MVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JuiceMaker-MVVM.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		63BE4E5B28368D1700E9608C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63BE4E5D28368D1700E9608C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				63B9C46F2838710400220FFF /* JuiceMakerViewModel.swift */,
+				63B9C4742839348C00220FFF /* FruitStockViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -80,6 +85,7 @@
 			children = (
 				63BE4E6128368D1700E9608C /* Main.storyboard */,
 				63BE4E5F28368D1700E9608C /* JuiceMakerViewController.swift */,
+				63B9C4722839347900220FFF /* FruitStockViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -195,12 +201,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				63B9C4702838710400220FFF /* JuiceMakerViewModel.swift in Sources */,
+				63B9C4732839347900220FFF /* FruitStockViewController.swift in Sources */,
 				63B9C4652837D66F00220FFF /* Fruit.swift in Sources */,
 				63B9C46D28386C4900220FFF /* JuiceMaker.swift in Sources */,
 				63BE4E6028368D1700E9608C /* JuiceMakerViewController.swift in Sources */,
 				63BE4E5C28368D1700E9608C /* AppDelegate.swift in Sources */,
 				63B9C4632837D64600220FFF /* FruitRepository.swift in Sources */,
 				63B9C46B2837DFE600220FFF /* FruitJuice.swift in Sources */,
+				63B9C4752839348C00220FFF /* FruitStockViewModel.swift in Sources */,
 				63BE4E5E28368D1700E9608C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

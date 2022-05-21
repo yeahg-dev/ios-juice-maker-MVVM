@@ -273,10 +273,10 @@
             </objects>
             <point key="canvasLocation" x="-339.50892857142856" y="127.53623188405798"/>
         </scene>
-        <!--Stock Manager View Controller-->
+        <!--Fruit Stock View Controller-->
         <scene sceneID="0yM-7S-EHQ">
             <objects>
-                <viewController storyboardIdentifier="StockManagerViewController" modalPresentationStyle="pageSheet" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yKR-jc-ncn" customClass="StockManagerViewController" customModule="JuiceMaker_MVVM" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StockManagerViewController" modalPresentationStyle="pageSheet" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yKR-jc-ncn" customClass="FruitStockViewController" customModule="JuiceMaker_MVVM" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YsU-wh-PD9">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -416,6 +416,18 @@
                             <constraint firstItem="MNc-N6-EKc" firstAttribute="leading" secondItem="1SS-kc-liu" secondAttribute="leading" constant="16" id="qAH-jK-7R1"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="bananaStepper" destination="ILT-xA-1ow" id="guL-KI-Asg"/>
+                        <outlet property="bananaStockLabel" destination="fWL-Kw-ZIq" id="IXw-2p-2bA"/>
+                        <outlet property="peachStepper" destination="6UU-eS-9IY" id="rpG-RN-vjm"/>
+                        <outlet property="peachStockLabel" destination="XBr-Tc-qvT" id="tLU-rJ-7q1"/>
+                        <outlet property="pineappleStepper" destination="TQ0-BS-BHD" id="M1T-YH-ytm"/>
+                        <outlet property="pineappleStockLabel" destination="Wz3-iE-YKl" id="Ene-96-gUZ"/>
+                        <outlet property="strawberryStepper" destination="Wgt-vw-bRB" id="ar5-Vl-wEO"/>
+                        <outlet property="strawberryStockLabel" destination="4Hz-P4-UZn" id="FRB-ZP-9xz"/>
+                        <outlet property="watermelonStepper" destination="Sdp-1a-HHC" id="S5c-ij-ivb"/>
+                        <outlet property="watermelonStockLabel" destination="483-Tg-oLL" id="J7Y-ru-opX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kgJ-Ya-vvf" sceneMemberID="firstResponder"/>
             </objects>
