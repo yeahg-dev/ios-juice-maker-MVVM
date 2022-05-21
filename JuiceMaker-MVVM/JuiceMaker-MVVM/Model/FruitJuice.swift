@@ -9,7 +9,7 @@ import Foundation
 
 protocol FruitJuice {
     
-    var juice: String { get }
+    var name: String { get }
     
     var ingredients: [Fruit: Int] { get }
     
@@ -17,7 +17,7 @@ protocol FruitJuice {
 
 struct StrawberryJuice: FruitJuice {
     
-    var juice: String {
+    var name: String {
         return "딸기 쥬스"
     }
     
@@ -29,7 +29,7 @@ struct StrawberryJuice: FruitJuice {
 
 struct PeachJuice: FruitJuice {
     
-    var juice: String {
+    var name: String {
         return "복숭아 쥬스"
     }
     
@@ -41,7 +41,7 @@ struct PeachJuice: FruitJuice {
 
 struct StrawberryPeachJuice: FruitJuice {
     
-    var juice: String {
+    var name: String {
         return "딸복 쥬스"
     }
     
@@ -53,7 +53,7 @@ struct StrawberryPeachJuice: FruitJuice {
 
 struct WatermelonJuice: FruitJuice {
     
-    var juice: String {
+    var name: String {
         return "수박 쥬스"
     }
     
@@ -65,7 +65,7 @@ struct WatermelonJuice: FruitJuice {
 
 struct PineappleJuice: FruitJuice {
     
-    var juice: String {
+    var name: String {
         return "파인애플 쥬스"
     }
     
@@ -77,7 +77,7 @@ struct PineappleJuice: FruitJuice {
 
 struct PineappleWatermelonJuice: FruitJuice {
     
-    var juice: String {
+    var name: String {
         return "수파 쥬스"
     }
     
@@ -89,7 +89,7 @@ struct PineappleWatermelonJuice: FruitJuice {
 
 struct BananaJuice: FruitJuice {
     
-    var juice: String {
+    var name: String {
         return "바나나 쥬스"
     }
     

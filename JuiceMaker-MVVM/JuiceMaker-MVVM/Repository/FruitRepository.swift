@@ -35,9 +35,9 @@ class FruitRepository {
         return observable
     }
     
-    func update(_ fruit: Fruit, by amount: Int) {
+    func decrease(_ fruit: Fruit, by amount: Int) {
         let latestStock = storage[fruit] ?? 0
-        let updatingStock = latestStock + amount
+        let updatingStock = latestStock - amount
         self.storage.updateValue(updatingStock, forKey: fruit)
     }
     
