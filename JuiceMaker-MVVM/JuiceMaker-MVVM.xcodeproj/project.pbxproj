@@ -190,8 +190,6 @@
 			mainGroup = 63BE4E4F28368D1700E9608C;
 			packageReferences = (
 				63BE4E6F28368F9900E9608C /* XCRemoteSwiftPackageReference "RxSwift" */,
-				63AC7DCF2837313C00027B76 /* XCRemoteSwiftPackageReference "RxSwift" */,
-				63B9C47928394A9400220FFF /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 63BE4E5928368D1700E9608C /* Products */;
 			projectDirPath = "";
@@ -452,22 +450,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		63AC7DCF2837313C00027B76 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactiveX/RxSwift";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-		63B9C47928394A9400220FFF /* XCRemoteSwiftPackageReference "RxSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactiveX/RxSwift";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		63BE4E6F28368F9900E9608C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
