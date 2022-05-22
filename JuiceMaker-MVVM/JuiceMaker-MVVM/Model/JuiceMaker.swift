@@ -89,7 +89,7 @@ struct JuiceMaker {
     
     private func isAbleToModifyFruitStock(of fruit: Fruit, with newValue: Int) -> Observable<Bool> {
         Observable.create { observer in
-            if newValue < 0 {
+            if newValue >= 0 {
                 observer.on(.next(true))
             } else {
                 observer.on(.next(false))

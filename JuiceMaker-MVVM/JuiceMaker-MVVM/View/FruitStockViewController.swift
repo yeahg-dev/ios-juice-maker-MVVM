@@ -28,17 +28,19 @@ class FruitStockViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private lazy var input = FruitStockViewModel.Input(
-        strawberryStepperValueObservable: strawberryStepper?.rx.value.asObservable(),
-        peachStepperValueObservable: peachStepper?.rx.value.asObservable() ,
-        pineappeldStepperValueObservable: pineappleStepper?.rx.value.asObservable(), watermelonStepperValueObservable: watermelonStepper?.rx.value.asObservable(),
-        bananaStepperValueObservable: bananaStepper?.rx.value.asObservable())
+        strawberryStepperValueObservable: self.strawberryStepper?.rx.value.asObservable(),
+        peachStepperValueObservable: self.peachStepper?.rx.value.asObservable(),
+        pineappeldStepperValueObservable: self.pineappleStepper?.rx.value.asObservable(),
+        watermelonStepperValueObservable: self.watermelonStepper?.rx.value.asObservable(),
+        bananaStepperValueObservable: self.bananaStepper?.rx.value.asObservable())
+    
     private lazy var output = fruitStockViewModel.transform(input: input)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindUI()
-        fruitStockViewModel.loadStock()
-        bindViewModel()
+        self.bindUI()
+        self.fruitStockViewModel.loadStock()
+        self.bindViewModel()
     }
     
     func bindViewModel() {

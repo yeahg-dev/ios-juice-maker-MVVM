@@ -52,13 +52,13 @@ class FruitStockViewModel {
         // 뷰컨트롤러에서 strawberryStepperValueObservable를 strawberryStepper?.rx.value.asObservable() 로 정의
         input.strawberryStepperValueObservable?
             .map({[weak self] stepperValue in
-                self?.initialStrawberryStock ?? 0 + Int(stepperValue)
+                // initialStrawberryStock은 뷰컨트롤러에서 loadStock된 후 값이 생김
+                (self?.initialStrawberryStock ?? 10) + Int(stepperValue)
             })
             .flatMap({ newValue in
                 self.juiceMaker.modifiedFruitStockObservable(of: .strawberry, with: newValue)
             })
             .map{String($0)}
-            .debug()
             .subscribe(
                 onNext: { stock in
                     self.strawberryStockObservable.onNext(stock)

@@ -38,7 +38,7 @@ class JuiceMakerViewController: UIViewController {
     // MARK: - bind UI
     
     private func bindUI() {
-        output.orderSuccess.subscribe(onNext: { [weak self] result in
+        output.orderSuccess.subscribe(onNext: {[weak self] result in
             self?.loadFruitStock()
         }).disposed(by: disposeBag)
         
@@ -48,8 +48,8 @@ class JuiceMakerViewController: UIViewController {
     }
     
     private func loadFruitStock() {
-        Fruit.allCases.forEach { fruit in
-            loadStock(of: fruit)
+        Fruit.allCases.forEach {[weak self] fruit in
+            self?.loadStock(of: fruit)
         }
     }
     
