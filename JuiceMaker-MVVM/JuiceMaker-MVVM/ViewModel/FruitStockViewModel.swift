@@ -58,12 +58,19 @@ class FruitStockViewModel {
             .flatMap({ newValue in
                 self.juiceMaker.modifiedFruitStockObservable(of: .strawberry, with: newValue)
             })
-            .map{String($0)}
             .subscribe(
-                onNext: { stock in
-                    self.strawberryStockObservable.onNext(stock)
-                }, onError:{ [weak self] _ in
-                    self?.notificationObservable.onNext(FruitStockNotification())
+                onNext: { fruitStockModificationResult in
+                    switch fruitStockModificationResult {
+                    case .success:
+                        self.juiceMaker.fruitStockObservable(of: .strawberry)
+                            .map{String($0)}
+                            .subscribe(onNext: { stock in
+                                self.strawberryStockObservable.onNext(stock)
+                            })
+                            .disposed(by: self.disposeBag)
+                    case .deficientFruitStockFailure  :
+                        self.notificationObservable.onNext(FruitStockNotification())
+                    }
                 })
             .disposed(by: disposeBag)
         

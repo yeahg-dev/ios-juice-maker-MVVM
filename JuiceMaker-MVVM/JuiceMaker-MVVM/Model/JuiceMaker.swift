@@ -64,19 +64,19 @@ struct JuiceMaker {
         }
     }
     
-    func modifiedFruitStockObservable(of fruit: Fruit, with newValue: Int) -> Observable<Int> {
-        Observable<Int>.create { observer in
+    func modifiedFruitStockObservable(of fruit: Fruit, with newValue: Int) -> Observable<FruitStockModification> {
+        Observable<FruitStockModification>.create { observer in
             self.isAbleToModifyFruitStock(of: fruit, with: newValue)
                 .subscribe { result in
                     if result.element == true {
                         self.requestModifyFruitStock(of: fruit, with: newValue)
                             .subscribe(onNext: {result in
                                 if result == FruitRepository.Result.success {
-                                    observer.onNext(newValue)
+                                    observer.onNext(FruitStockModification.success)
                                 }
                             }).disposed(by: disposeBag)
                     } else if result.element == false {
-                        observer.onError(JuiceMakerError.deficientFruitStock)
+                        observer.onNext(FruitStockModification.deficientFruitStockFailure)
                     }
                 }.disposed(by: disposeBag)
             return Disposables.create()
@@ -102,8 +102,9 @@ struct JuiceMaker {
 
 extension JuiceMaker {
     
-    enum JuiceMakerError: Error {
+    enum FruitStockModification {
         
-        case deficientFruitStock
+        case success
+        case deficientFruitStockFailure
     }
 }
