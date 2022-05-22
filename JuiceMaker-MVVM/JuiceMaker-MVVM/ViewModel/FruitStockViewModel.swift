@@ -8,58 +8,117 @@
 import Foundation
 import RxSwift
 
-struct FruitStockViewModel {
+class FruitStockViewModel {
     
     private let juiceMaker = JuiceMaker()
     private let disposeBag = DisposeBag()
     
-    let strawberryStockObservable = PublishSubject<Int>()
-    let peachStockObservable = PublishSubject<Int>()
-    let pineappleStockObservable = PublishSubject<Int>()
-    let watermelonStockObservable = PublishSubject<Int>()
-    let bananaStockObservable = PublishSubject<Int>()
+    let strawberryStockObservable = PublishSubject<String?>()
+    let peachStockObservable = PublishSubject<String?>()
+    let pineappleStockObservable = PublishSubject<String?>()
+    let watermelonStockObservable = PublishSubject<String?>()
+    let bananaStockObservable = PublishSubject<String?>()
+    let notificationObservable = PublishSubject<FruitStockNotification>()
     
+    var initialStrawberryStock: Int?
+    var initialPeachStock: Int?
+    var initialPineappleStock: Int?
+    var initialWatermelonStock: Int?
+    var initialBananaStock: Int?
+
     struct Input {
-        
+        let strawberryStepperValueObservable: Observable<Double>?
+        let peachStepperValueObservable: Observable<Double>?
+        let pineappeldStepperValueObservable: Observable<Double>?
+        let watermelonStepperValueObservable: Observable<Double>?
+        let bananaStepperValueObservable: Observable<Double>?
     }
     
     struct Output {
-        let strawberryStockObservable: Observable<String?>
-        let peachStockObservable: Observable<String?>
-        let pineappleStockObservable: Observable<String?>
-        let watermelonStockObservable: Observable<String?>
-        let bananaStockObservable: Observable<String?>
+        let strawberryStockObservable: PublishSubject<String?>
+        let peachStockObservable: PublishSubject<String?>
+        let pineappleStockObservable: PublishSubject<String?>
+        let watermelonStockObservable: PublishSubject<String?>
+        let bananaStockObservable: PublishSubject<String?>
+        let notificationObservable: PublishSubject<FruitStockNotification>
     }
     
-    func transform() -> Output {
+    func transform(input: Input) -> Output {
+        // steppervalue 모델에 반영
+        // 모델: 0 이상이면 현재개수 방출하는 Observable 리턴, 0이하면 오류 방출하는 Observable 리턴하는 메서드 구현
+        // 뷰모델에서 모델이 방출하는 개수를 StockObservable에 onNext로 흘려보냄
+        // 뷰컨에서 에러에대한 알럿 구현
         
-        return Output(strawberryStockObservable: strawberryStockObservable.map{String($0)},
-                      peachStockObservable: peachStockObservable.map{String($0)},
-                      pineappleStockObservable: pineappleStockObservable.map{String($0)},
-                      watermelonStockObservable: watermelonStockObservable.map{String($0)},
-                      bananaStockObservable: bananaStockObservable.map{String($0)})
+        // 뷰컨트롤러에서 strawberryStepperValueObservable를 strawberryStepper?.rx.value.asObservable() 로 정의
+        input.strawberryStepperValueObservable?
+            .map({[weak self] stepperValue in
+                self?.initialStrawberryStock ?? 0 + Int(stepperValue)
+            })
+            .flatMap({ newValue in
+                self.juiceMaker.modifiedFruitStockObservable(of: .strawberry, with: newValue)
+            })
+            .map{String($0)}
+            .debug()
+            .subscribe(
+                onNext: { stock in
+                    self.strawberryStockObservable.onNext(stock)
+                }, onError:{ [weak self] _ in
+                    self?.notificationObservable.onNext(FruitStockNotification())
+                })
+            .disposed(by: disposeBag)
+        
+        return Output(strawberryStockObservable: strawberryStockObservable,
+                      peachStockObservable: peachStockObservable,
+                      pineappleStockObservable: pineappleStockObservable,
+                      watermelonStockObservable: watermelonStockObservable,
+                      bananaStockObservable: bananaStockObservable,
+                      notificationObservable: notificationObservable)
     }
     
     func loadStock() {
         juiceMaker.fruitStockObservable(of: .strawberry)
-            .subscribe(onNext: {stock in strawberryStockObservable.onNext(stock)})
+            .map{String($0)}
+            .subscribe(onNext: {[weak self] stock in
+                self?.strawberryStockObservable.onNext(stock)
+                self?.initialStrawberryStock = Int(stock)!
+            })
             .disposed(by: disposeBag)
         
         juiceMaker.fruitStockObservable(of: .peach)
-            .subscribe(onNext: {stock in peachStockObservable.onNext(stock)})
+            .map{String($0)}
+            .subscribe(onNext: {[weak self] stock in
+                self?.peachStockObservable.onNext(stock)
+                self?.initialStrawberryStock = Int(stock)!
+            })
             .disposed(by: disposeBag)
         
         juiceMaker.fruitStockObservable(of: .pineapple)
-            .subscribe(onNext: {stock in pineappleStockObservable.onNext(stock)})
+            .map{String($0)}
+            .subscribe(onNext: {[weak self] stock in
+                self?.pineappleStockObservable.onNext(stock)
+                self?.initialStrawberryStock = Int(stock)!
+            })
             .disposed(by: disposeBag)
         
         juiceMaker.fruitStockObservable(of: .watermelon)
-            .subscribe(onNext: {stock in watermelonStockObservable.onNext(stock)})
+            .map{String($0)}
+            .subscribe(onNext: {[weak self] stock in
+                self?.watermelonStockObservable.onNext(stock)
+                self?.initialStrawberryStock = Int(stock)!
+            })
             .disposed(by: disposeBag)
         
         juiceMaker.fruitStockObservable(of: .banana)
-            .subscribe(onNext: {stock in bananaStockObservable.onNext(stock)})
+            .map{String($0)}
+            .subscribe(onNext: {[weak self] stock in
+                self?.bananaStockObservable.onNext(stock)
+                self?.initialStrawberryStock = Int(stock)!
+            })
             .disposed(by: disposeBag)
     }
-    
+}
+
+struct FruitStockNotification {
+    var title = "더 이상 줄일 수 없어요"
+    var ok = "확인"
 }

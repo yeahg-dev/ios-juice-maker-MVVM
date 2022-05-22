@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class FruitStockViewController: UIViewController {
     
@@ -23,18 +24,40 @@ class FruitStockViewController: UIViewController {
     @IBOutlet weak var watermelonStepper: UIStepper?
     @IBOutlet weak var bananaStepper: UIStepper?
     
-    private let fruitStockViewModel = FruitStockViewModel()
+    private var fruitStockViewModel = FruitStockViewModel()
     private let disposeBag = DisposeBag()
     
-    private lazy var output = fruitStockViewModel.transform()
+    private lazy var input = FruitStockViewModel.Input(
+        strawberryStepperValueObservable: strawberryStepper?.rx.value.asObservable(),
+        peachStepperValueObservable: peachStepper?.rx.value.asObservable() ,
+        pineappeldStepperValueObservable: pineappleStepper?.rx.value.asObservable(), watermelonStepperValueObservable: watermelonStepper?.rx.value.asObservable(),
+        bananaStepperValueObservable: bananaStepper?.rx.value.asObservable())
+    private lazy var output = fruitStockViewModel.transform(input: input)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         bindUI()
         fruitStockViewModel.loadStock()
+        bindViewModel()
+    }
+    
+    func bindViewModel() {
+        
+            // steppervalue 모델에 반영
+            // 모델: 0 이상이면 현재개수 방출하는 Observable 리턴, 0이하면 오류 방출하는 Observable 리턴하는 메서드 구현
+            // 뷰모델에서 모델이 방출하는 개수를 StockObservable에 onNext로 흘려보냄
+            // 뷰컨에서 에러에대한 알럿 구현
+        self.output.strawberryStockObservable
+            .subscribe(onNext:{ stock in
+                self.strawberryStockLabel?.text = stock
+            }).disposed(by: disposeBag)
     }
   
     func bindUI() {
+        strawberryStepper?.rx.value.asObservable().subscribe(onNext: {value in
+            print("🍓\(value)")
+        }).disposed(by: disposeBag)
+        
         self.output.strawberryStockObservable
             .subscribe(onNext: {[weak self] stock in
                 self?.strawberryStockLabel?.text = stock})

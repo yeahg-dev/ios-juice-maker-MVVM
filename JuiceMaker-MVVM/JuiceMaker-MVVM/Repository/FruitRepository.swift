@@ -35,10 +35,26 @@ class FruitRepository {
         return observable
     }
     
+    func update(_ fruit: Fruit, with newValue: Int) -> Observable<FruitRepository.Result> {
+        Observable.create { observer in
+            self.storage.updateValue(newValue, forKey: fruit)
+            observer.onNext(.success)
+            return Disposables.create()
+        }
+    }
+    
     func decrease(_ fruit: Fruit, by amount: Int) {
         let latestStock = storage[fruit] ?? 0
         let updatingStock = latestStock - amount
         self.storage.updateValue(updatingStock, forKey: fruit)
     }
-    
+
+}
+
+extension FruitRepository {
+    enum Result
+    {
+        case success
+        case failure
+    }
 }
