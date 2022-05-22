@@ -10,9 +10,13 @@ import RxSwift
 
 class FruitRepository {
     
+    // MARK: - Property
+    
     static let shared = FruitRepository(defaultFruitStock: 10)
     
     var storage: [Fruit: Int] = [:]
+    
+    // MARK: - Method
     
     init(defaultFruitStock: Int) {
         for fruit in Fruit.allCases {
@@ -21,14 +25,16 @@ class FruitRepository {
     }
     
     func create(_ fruit: Fruit) {
-        let latestStock = storage[fruit] ?? 0
-        self.storage.updateValue(latestStock + 1, forKey: fruit)
+        guard let _ = self.storage[fruit] else {
+            self.storage.updateValue( 1, forKey: fruit)
+            return
+        }
     }
     
     func read(_ fruit: Fruit) -> Observable<Int> {
-        let availableStock = self.storage[fruit]
+        let latestStock = self.storage[fruit]
         
-        let observable =  Observable.just(availableStock)
+        let observable =  Observable.just(latestStock)
             .filter{$0 != nil}
             .map{$0!}
         
@@ -52,8 +58,9 @@ class FruitRepository {
 }
 
 extension FruitRepository {
-    enum Result
-    {
+    
+    enum Result {
+        
         case success
         case failure
     }

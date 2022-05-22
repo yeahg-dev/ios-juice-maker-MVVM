@@ -10,8 +10,12 @@ import RxSwift
 
 struct JuiceMaker {
     
+    // MARK: - Property
+    
     private let fruitRepository = FruitRepository.shared
     private let disposeBag = DisposeBag()
+    
+    // MARK: - Business Logic
     
     func fruitStockObservable(of fruit: Fruit) -> Observable<Int> {
         fruitRepository.read(fruit)
@@ -45,13 +49,17 @@ struct JuiceMaker {
             self.hasSufficientFruit(of: fruit, about: amount)
                 .subscribe(onNext: { result in
                     hasSufficientIngredients.onNext(result)
-                }).disposed(by: disposeBag)
+                })
+                .disposed(by: disposeBag)
         }
         
         return hasSufficientIngredients
     }
     
-    private func hasSufficientFruit(of fruit: Fruit, about neededAmount: Int) -> Observable<Bool> {
+    private func hasSufficientFruit(
+        of fruit: Fruit,
+        about neededAmount: Int
+    ) -> Observable<Bool> {
         let hasSufficeintFruit = fruitRepository.read(fruit)
             .map({stock in stock >= neededAmount})
         
@@ -64,7 +72,10 @@ struct JuiceMaker {
         }
     }
     
-    func modifiedFruitStockObservable(of fruit: Fruit, with newValue: Int) -> Observable<FruitStockModification> {
+    func modifiedFruitStockObservable(
+        of fruit: Fruit,
+        with newValue: Int
+    ) -> Observable<FruitStockModification> {
         Observable<FruitStockModification>.create { observer in
             self.isAbleToModifyFruitStock(of: fruit, with: newValue)
                 .subscribe { result in
@@ -72,22 +83,22 @@ struct JuiceMaker {
                         self.requestModifyFruitStock(of: fruit, with: newValue)
                             .subscribe(onNext: {result in
                                 if result == FruitRepository.Result.success {
-                                    observer.onNext(FruitStockModification.success)
-                                }
-                            }).disposed(by: disposeBag)
+                                    observer.onNext(FruitStockModification.success)}
+                            })
+                            .disposed(by: disposeBag)
                     } else if result.element == false {
                         observer.onNext(FruitStockModification.deficientFruitStockFailure)
                     }
-                }.disposed(by: disposeBag)
+                }
+                .disposed(by: disposeBag)
             return Disposables.create()
         }
     }
     
-    private func requestModifyFruitStock(of fruit: Fruit, with newValue: Int) -> Observable<FruitRepository.Result> {
-        return self.fruitRepository.update(fruit, with: newValue)
-    }
-    
-    private func isAbleToModifyFruitStock(of fruit: Fruit, with newValue: Int) -> Observable<Bool> {
+    private func isAbleToModifyFruitStock(
+        of fruit: Fruit,
+        with newValue: Int
+    ) -> Observable<Bool> {
         Observable.create { observer in
             if newValue >= 0 {
                 observer.on(.next(true))
@@ -96,6 +107,13 @@ struct JuiceMaker {
             }
             return Disposables.create()
         }
+    }
+    
+    private func requestModifyFruitStock(
+        of fruit: Fruit,
+        with newValue: Int
+    ) -> Observable<FruitRepository.Result> {
+        return self.fruitRepository.update(fruit, with: newValue)
     }
     
 }

@@ -10,6 +10,7 @@ import RxSwift
 
 class FruitStockViewModel {
     
+    // MARK: - Property
     private let juiceMaker = JuiceMaker()
     private let disposeBag = DisposeBag()
     
@@ -18,14 +19,15 @@ class FruitStockViewModel {
     let pineappleStockObservable = PublishSubject<String?>()
     let watermelonStockObservable = PublishSubject<String?>()
     let bananaStockObservable = PublishSubject<String?>()
-    let notificationObservable = PublishSubject<FruitStockNotification>()
+    let notificationObservable = PublishSubject<UserNotification>()
     
     var initialStrawberryStock: Int?
     var initialPeachStock: Int?
     var initialPineappleStock: Int?
     var initialWatermelonStock: Int?
     var initialBananaStock: Int?
-
+    
+    // MARK: - Input/Output
     struct Input {
         let strawberryStepperValueObservable: Observable<Double>?
         let peachStepperValueObservable: Observable<Double>?
@@ -40,19 +42,14 @@ class FruitStockViewModel {
         let pineappleStockObservable: PublishSubject<String?>
         let watermelonStockObservable: PublishSubject<String?>
         let bananaStockObservable: PublishSubject<String?>
-        let notificationObservable: PublishSubject<FruitStockNotification>
+        let notificationObservable: PublishSubject<UserNotification>
     }
     
+    // MARK: - bindViewModel
     func transform(input: Input) -> Output {
-        // steppervalue 모델에 반영
-        // 모델: 0 이상이면 현재개수 방출하는 Observable 리턴, 0이하면 오류 방출하는 Observable 리턴하는 메서드 구현
-        // 뷰모델에서 모델이 방출하는 개수를 StockObservable에 onNext로 흘려보냄
-        // 뷰컨에서 에러에대한 알럿 구현
-        
-        // 뷰컨트롤러에서 strawberryStepperValueObservable를 strawberryStepper?.rx.value.asObservable() 로 정의
         input.strawberryStepperValueObservable?
             .map({[weak self] stepperValue in
-                // initialStrawberryStock은 뷰컨트롤러에서 loadStock된 후 값이 생김
+                // FIXME: - initialStrawberryStock은 뷰컨트롤러에서 loadStock된 후 값이 생김
                 (self?.initialStrawberryStock ?? 10) + Int(stepperValue)
             })
             .flatMap({ newValue in
@@ -69,7 +66,7 @@ class FruitStockViewModel {
                             })
                             .disposed(by: self.disposeBag)
                     case .deficientFruitStockFailure  :
-                        self.notificationObservable.onNext(FruitStockNotification())
+                        self.notificationObservable.onNext(UserNotification())
                     }
                 })
             .disposed(by: disposeBag)
@@ -123,9 +120,13 @@ class FruitStockViewModel {
             })
             .disposed(by: disposeBag)
     }
+    
+    // MARK: - UserNotification
+    
+    struct UserNotification {
+        var title = "더 이상 줄일 수 없어요"
+        var ok = "확인"
+    }
+    
 }
 
-struct FruitStockNotification {
-    var title = "더 이상 줄일 수 없어요"
-    var ok = "확인"
-}

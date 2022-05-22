@@ -26,7 +26,7 @@ class JuiceMakerViewController: UIViewController {
     private lazy var output = juiceMakerViewModel.transfrom(input: input)
     
     private let disposeBag = DisposeBag()
-
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -40,11 +40,14 @@ class JuiceMakerViewController: UIViewController {
     private func bindUI() {
         output.orderSuccess.subscribe(onNext: {[weak self] result in
             self?.loadFruitStock()
-        }).disposed(by: disposeBag)
+            
+        })
+        .disposed(by: disposeBag)
         
         output.alertMessage.subscribe(onNext: {string in
             //TODO: - Alert 구현
-        }).disposed(by: disposeBag)
+        })
+        .disposed(by: disposeBag)
     }
     
     private func loadFruitStock() {
@@ -72,7 +75,8 @@ class JuiceMakerViewController: UIViewController {
             .map{String($0)}
             .subscribe(onNext: { stock in
                 label?.text = stock
-            }).disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - @IBAction

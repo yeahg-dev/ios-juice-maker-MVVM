@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - FruitJuice Protocol
 protocol FruitJuice {
     
     var name: String { get }
@@ -15,6 +16,7 @@ protocol FruitJuice {
     
 }
 
+// MARK: - FruitJuice Type
 struct StrawberryJuice: FruitJuice {
     
     var name: String {
