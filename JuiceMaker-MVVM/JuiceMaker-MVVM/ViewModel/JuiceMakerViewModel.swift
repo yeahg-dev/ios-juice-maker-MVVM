@@ -58,6 +58,7 @@ struct JuiceMakerViewModel {
     }
     
     // MARK: - UserNotification
+    
     enum UserNotification: String {
         
         case orderSuccess

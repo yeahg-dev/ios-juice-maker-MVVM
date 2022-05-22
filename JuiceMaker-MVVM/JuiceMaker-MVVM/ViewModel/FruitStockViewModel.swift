@@ -11,6 +11,7 @@ import RxSwift
 class FruitStockViewModel {
     
     // MARK: - Property
+    
     private let juiceMaker = JuiceMaker()
     private let disposeBag = DisposeBag()
     
@@ -46,6 +47,7 @@ class FruitStockViewModel {
     }
     
     // MARK: - bindViewModel
+    
     func transform(input: Input) -> Output {
 
         input.strawberryStepperValueObservable?
