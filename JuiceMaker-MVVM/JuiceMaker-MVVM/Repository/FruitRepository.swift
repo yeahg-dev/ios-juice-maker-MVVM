@@ -14,7 +14,7 @@ class FruitRepository {
     
     static let shared = FruitRepository(defaultFruitStock: 10)
     
-    var storage: [Fruit: Int] = [:]
+    private var storage: [Fruit: Int] = [:]
     
     // MARK: - Method
     
