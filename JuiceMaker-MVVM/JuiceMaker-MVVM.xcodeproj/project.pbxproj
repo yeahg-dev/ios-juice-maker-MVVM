@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		63AC7DD12837313C00027B76 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 63AC7DD02837313C00027B76 /* RxSwift */; };
+		6311C9E9283CDC7900E00BFF /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 6311C9E8283CDC7900E00BFF /* RxCocoa */; };
+		6311C9EB283CDC7900E00BFF /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6311C9EA283CDC7900E00BFF /* RxSwift */; };
 		63B9C4632837D64600220FFF /* FruitRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C4622837D64600220FFF /* FruitRepository.swift */; };
 		63B9C4652837D66F00220FFF /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C4642837D66F00220FFF /* Fruit.swift */; };
 		63B9C46B2837DFE600220FFF /* FruitJuice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C46A2837DFE600220FFF /* FruitJuice.swift */; };
@@ -15,7 +16,6 @@
 		63B9C4702838710400220FFF /* JuiceMakerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C46F2838710400220FFF /* JuiceMakerViewModel.swift */; };
 		63B9C4732839347900220FFF /* FruitStockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C4722839347900220FFF /* FruitStockViewController.swift */; };
 		63B9C4752839348C00220FFF /* FruitStockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9C4742839348C00220FFF /* FruitStockViewModel.swift */; };
-		63B9C47B28394A9400220FFF /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 63B9C47A28394A9400220FFF /* RxCocoa */; };
 		63BE4E5C28368D1700E9608C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5B28368D1700E9608C /* AppDelegate.swift */; };
 		63BE4E5E28368D1700E9608C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5D28368D1700E9608C /* SceneDelegate.swift */; };
 		63BE4E6028368D1700E9608C /* JuiceMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE4E5F28368D1700E9608C /* JuiceMakerViewController.swift */; };
@@ -47,8 +47,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63B9C47B28394A9400220FFF /* RxCocoa in Frameworks */,
-				63AC7DD12837313C00027B76 /* RxSwift in Frameworks */,
+				6311C9EB283CDC7900E00BFF /* RxSwift in Frameworks */,
+				6311C9E9283CDC7900E00BFF /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,8 +157,8 @@
 			);
 			name = "JuiceMaker-MVVM";
 			packageProductDependencies = (
-				63AC7DD02837313C00027B76 /* RxSwift */,
-				63B9C47A28394A9400220FFF /* RxCocoa */,
+				6311C9E8283CDC7900E00BFF /* RxCocoa */,
+				6311C9EA283CDC7900E00BFF /* RxSwift */,
 			);
 			productName = "JuiceMaker-MVVM";
 			productReference = 63BE4E5828368D1700E9608C /* JuiceMaker-MVVM.app */;
@@ -189,7 +189,7 @@
 			);
 			mainGroup = 63BE4E4F28368D1700E9608C;
 			packageReferences = (
-				63BE4E6F28368F9900E9608C /* XCRemoteSwiftPackageReference "RxSwift" */,
+				6311C9E7283CDC7900E00BFF /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 63BE4E5928368D1700E9608C /* Products */;
 			projectDirPath = "";
@@ -304,7 +304,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -359,10 +359,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -383,8 +384,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -394,7 +396,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -411,8 +413,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -422,7 +425,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -450,7 +453,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		63BE4E6F28368F9900E9608C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		6311C9E7283CDC7900E00BFF /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
 			requirement = {
@@ -461,15 +464,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		63AC7DD02837313C00027B76 /* RxSwift */ = {
+		6311C9E8283CDC7900E00BFF /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 63BE4E6F28368F9900E9608C /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxSwift;
-		};
-		63B9C47A28394A9400220FFF /* RxCocoa */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 63BE4E6F28368F9900E9608C /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = 6311C9E7283CDC7900E00BFF /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
+		};
+		6311C9EA283CDC7900E00BFF /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6311C9E7283CDC7900E00BFF /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

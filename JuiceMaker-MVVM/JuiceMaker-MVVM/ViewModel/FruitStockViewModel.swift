@@ -15,13 +15,7 @@ class FruitStockViewModel {
     private let juiceMaker = JuiceMaker()
     private let disposeBag = DisposeBag()
     
-    let strawberryStockObservable = PublishSubject<String?>()
-    let peachStockObservable = PublishSubject<String?>()
-    let pineappleStockObservable = PublishSubject<String?>()
-    let watermelonStockObservable = PublishSubject<String?>()
-    let bananaStockObservable = PublishSubject<String?>()
-    let notificationObservable = PublishSubject<UserNotification>()
-    
+    // TODO: - 삭제
     var initialStrawberryStock: Int?
     var initialPeachStock: Int?
     var initialPineappleStock: Int?
@@ -30,6 +24,7 @@ class FruitStockViewModel {
     
     // MARK: - Input/Output
     struct Input {
+        let viewWillAppear: Observable<[Any]>
         let strawberryStepperValueObservable: Observable<Double>?
         let peachStepperValueObservable: Observable<Double>?
         let pineappeldStepperValueObservable: Observable<Double>?
@@ -38,194 +33,156 @@ class FruitStockViewModel {
     }
     
     struct Output {
-        let strawberryStockObservable: PublishSubject<String?>
-        let peachStockObservable: PublishSubject<String?>
-        let pineappleStockObservable: PublishSubject<String?>
-        let watermelonStockObservable: PublishSubject<String?>
-        let bananaStockObservable: PublishSubject<String?>
-        let notificationObservable: PublishSubject<UserNotification>
+        let strawberryStockObservable: Observable<String>?
+        let peachStockObservable: Observable<String?>
+        let pineappleStockObservable: Observable<String?>
+        let watermelonStockObservable: Observable<String?>
+        let bananaStockObservable: Observable<String?>
+        let notificationObservable: Observable<UserNotification>?
     }
     
     // MARK: - bindViewModel
     
     func transform(input: Input) -> Output {
+        let userNotificationObservable = PublishSubject<UserNotification>()
+        
+        let strawberryStockModificationObservable = input.strawberryStepperValueObservable?
+            .map{Int($0)}
+            .map({ [weak self] stepperValue in
+                stepperValue + (self?.initialStrawberryStock ?? 10)
+            })
+            .flatMap({ stock in
+                self.juiceMaker.modifiedFruitStockObservable(of: .strawberry, with: stock)
+            })
+            .share(replay: 1)
+            
+        let strawberryStockObservable = strawberryStockModificationObservable?
+            .do(onNext: { modificationResult in
+                if modificationResult == .deficientFruitStockFailure {
+                    userNotificationObservable.onNext(UserNotification())
+                }
+            })
+            .filter({ stockModificationResult in
+                stockModificationResult == FruitStockModification.success
+            })
+            .flatMap{ _ -> Observable<Int> in
+                self.juiceMaker.fruitStockObservable(of: .strawberry)
+            }
+            .map{ stock in
+                String(stock) }
+        
+        let peachStockModificationObservable = input.peachStepperValueObservable?
+            .map{Int($0)}
+            .map({ [weak self] stepperValue in
+                stepperValue + (self?.initialPeachStock ?? 10)
+            })
+            .flatMap({ stock in
+                self.juiceMaker.modifiedFruitStockObservable(of: .peach, with: stock)
+            })
+            .share(replay: 1)
+            
+        let peachStockObservable = peachStockModificationObservable?
+            .do(onNext: { modificationResult in
+                if modificationResult == .deficientFruitStockFailure {
+                    userNotificationObservable.onNext(UserNotification())
+                }
+            })
+            .filter({ stockModificationResult in
+                stockModificationResult == FruitStockModification.success
+            })
+            .flatMap{ _ -> Observable<Int> in
+                self.juiceMaker.fruitStockObservable(of: .peach)
+            }
+            .map{ stock in
+                String(stock) }
+        
+        let pineappleStockModificationObservable = input.pineappleStepperValueObservable?
+            .map{Int($0)}
+            .map({ [weak self] stepperValue in
+                stepperValue + (self?.initialPineappleStock ?? 10)
+            })
+            .flatMap({ stock in
+                self.juiceMaker.modifiedFruitStockObservable(of: .pineapple, with: stock)
+            })
+            .share(replay: 1)
+        
+        let pineappleStockObservable = pineappleStockModificationObservable?
+            .do(onNext: { modificationResult in
+                if modificationResult == .deficientFruitStockFailure {
+                    userNotificationObservable.onNext(UserNotification())
+                }
+            })
+            .filter({ stockModificationResult in
+                stockModificationResult == FruitStockModification.success
+            })
+            .flatMap{ _ -> Observable<Int> in
+                self.juiceMaker.fruitStockObservable(of: .pineapple)
+            }
+            .map{ stock in
+                String(stock) }
+        
+        let watermelonStockModificationObservable = input.watermelonStepperValueObservable?
+            .map{Int($0)}
+            .map({ [weak self] stepperValue in
+                stepperValue + (self?.initialWatermelonStock ?? 10)
+            })
+            .flatMap({ stock in
+                self.juiceMaker.modifiedFruitStockObservable(of: .watermelon, with: stock)
+            })
+            .share(replay: 1)
+        
+        let watermelonStockObservable = watermelonStockModificationObservable?
+            .do(onNext: { modificationResult in
+                if modificationResult == .deficientFruitStockFailure {
+                    userNotificationObservable.onNext(UserNotification())
+                }
+            })
+            .filter({ stockModificationResult in
+                stockModificationResult == FruitStockModification.success
+            })
+            .flatMap{ _ -> Observable<Int> in
+                self.juiceMaker.fruitStockObservable(of: .watermelon)
+            }
+            .map{ stock in
+                String(stock) }
+        
+        let bananaStockModificationObservable = input.bananaStepperValueObservable?
+            .map{Int($0)}
+            .map({ [weak self] stepperValue in
+                stepperValue + (self?.initialBananaStock ?? 10)
+            })
+            .flatMap({ stock in
+                self.juiceMaker.modifiedFruitStockObservable(of: .banana, with: stock)
+            })
+            .share(replay: 1)
+        
+        let bananaStockObservable = bananaStockModificationObservable?
+            .do(onNext: { modificationResult in
+                if modificationResult == .deficientFruitStockFailure {
+                    userNotificationObservable.onNext(UserNotification())
+                }
+            })
+            .filter({ stockModificationResult in
+                stockModificationResult == FruitStockModification.success
+            })
+            .flatMap{ _ -> Observable<Int> in
+                self.juiceMaker.fruitStockObservable(of: .banana)
+            }
+            .map{ stock in
+                String(stock) }
+     
 
-        input.strawberryStepperValueObservable?
-            .map({[weak self] stepperValue in
-                // FIXME: - initialStrawberryStock은 뷰컨트롤러에서 loadStock된 후 값이 생김
-                (self?.initialStrawberryStock ?? 10) + Int(stepperValue)
-            })
-            .flatMap({ newValue in
-                self.juiceMaker.modifiedFruitStockObservable(of: .strawberry, with: newValue)
-            })
-            .subscribe(
-                onNext: { fruitStockModificationResult in
-                    switch fruitStockModificationResult {
-                    case .success:
-                        self.juiceMaker.fruitStockObservable(of: .strawberry)
-                            .map{String($0)}
-                            .subscribe(onNext: { stock in
-                                self.strawberryStockObservable.onNext(stock)
-                            })
-                            .disposed(by: self.disposeBag)
-                    case .deficientFruitStockFailure  :
-                        self.notificationObservable.onNext(UserNotification())
-                    }
-                })
-            .disposed(by: disposeBag)
-        
-        input.peachStepperValueObservable?
-            .map({[weak self] stepperValue in
-                // FIXME: - initialStrawberryStock은 뷰컨트롤러에서 loadStock된 후 값이 생김
-                (self?.initialPeachStock ?? 10) + Int(stepperValue)
-            })
-            .flatMap({ newValue in
-                self.juiceMaker.modifiedFruitStockObservable(of: .peach, with: newValue)
-            })
-            .subscribe(
-                onNext: { fruitStockModificationResult in
-                    switch fruitStockModificationResult {
-                    case .success:
-                        self.juiceMaker.fruitStockObservable(of: .peach)
-                            .map{String($0)}
-                            .subscribe(onNext: { stock in
-                                self.peachStockObservable.onNext(stock)
-                            })
-                            .disposed(by: self.disposeBag)
-                    case .deficientFruitStockFailure  :
-                        self.notificationObservable.onNext(UserNotification())
-                    }
-                })
-            .disposed(by: disposeBag)
-        
-        input.pineappeldStepperValueObservable?
-            .map({[weak self] stepperValue in
-                // FIXME: - initialStrawberryStock은 뷰컨트롤러에서 loadStock된 후 값이 생김
-                (self?.initialPineappleStock ?? 10) + Int(stepperValue)
-            })
-            .flatMap({ newValue in
-                self.juiceMaker.modifiedFruitStockObservable(of: .pineapple, with: newValue)
-            })
-            .subscribe(
-                onNext: { fruitStockModificationResult in
-                    switch fruitStockModificationResult {
-                    case .success:
-                        self.juiceMaker.fruitStockObservable(of: .pineapple)
-                            .map{String($0)}
-                            .subscribe(onNext: { stock in
-                                self.pineappleStockObservable.onNext(stock)
-                            })
-                            .disposed(by: self.disposeBag)
-                    case .deficientFruitStockFailure  :
-                        self.notificationObservable.onNext(UserNotification())
-                    }
-                })
-            .disposed(by: disposeBag)
-        
-        input.watermelonStepperValueObservable?
-            .map({[weak self] stepperValue in
-                // FIXME: - initialStrawberryStock은 뷰컨트롤러에서 loadStock된 후 값이 생김
-                (self?.initialWatermelonStock ?? 10) + Int(stepperValue)
-            })
-            .flatMap({ newValue in
-                self.juiceMaker.modifiedFruitStockObservable(of: .watermelon, with: newValue)
-            })
-            .subscribe(
-                onNext: { fruitStockModificationResult in
-                    switch fruitStockModificationResult {
-                    case .success:
-                        self.juiceMaker.fruitStockObservable(of: .watermelon)
-                            .map{String($0)}
-                            .subscribe(onNext: { stock in
-                                self.watermelonStockObservable.onNext(stock)
-                            })
-                            .disposed(by: self.disposeBag)
-                    case .deficientFruitStockFailure  :
-                        self.notificationObservable.onNext(UserNotification())
-                    }
-                })
-            .disposed(by: disposeBag)
-        
-        input.bananaStepperValueObservable?
-            .map({[weak self] stepperValue in
-                // FIXME: - initialStrawberryStock은 뷰컨트롤러에서 loadStock된 후 값이 생김
-                (self?.initialBananaStock ?? 10) + Int(stepperValue)
-            })
-            .flatMap({ newValue in
-                self.juiceMaker.modifiedFruitStockObservable(of: .banana, with: newValue)
-            })
-            .subscribe(
-                onNext: { fruitStockModificationResult in
-                    switch fruitStockModificationResult {
-                    case .success:
-                        self.juiceMaker.fruitStockObservable(of: .banana)
-                            .map{String($0)}
-                            .subscribe(onNext: { stock in
-                                self.bananaStockObservable.onNext(stock)
-                            })
-                            .disposed(by: self.disposeBag)
-                    case .deficientFruitStockFailure  :
-                        self.notificationObservable.onNext(UserNotification())
-                    }
-                })
-            .disposed(by: disposeBag)
-        
         return Output(strawberryStockObservable: strawberryStockObservable,
                       peachStockObservable: peachStockObservable,
                       pineappleStockObservable: pineappleStockObservable,
                       watermelonStockObservable: watermelonStockObservable,
                       bananaStockObservable: bananaStockObservable,
-                      notificationObservable: notificationObservable)
+                      notificationObservable: userNotificationObservable)
     }
-    
-    func loadStock() {
-        juiceMaker.fruitStockObservable(of: .strawberry)
-            .map{String($0)}
-            .subscribe(onNext: {[weak self] stock in
-                self?.strawberryStockObservable.onNext(stock)
-                self?.initialStrawberryStock = Int(stock)!
-            })
-            .disposed(by: disposeBag)
-        
-        juiceMaker.fruitStockObservable(of: .peach)
-            .map{String($0)}
-            .subscribe(onNext: {[weak self] stock in
-                self?.peachStockObservable.onNext(stock)
-                self?.initialStrawberryStock = Int(stock)!
-            })
-            .disposed(by: disposeBag)
-        
-        juiceMaker.fruitStockObservable(of: .pineapple)
-            .map{String($0)}
-            .subscribe(onNext: {[weak self] stock in
-                self?.pineappleStockObservable.onNext(stock)
-                self?.initialStrawberryStock = Int(stock)!
-            })
-            .disposed(by: disposeBag)
-        
-        juiceMaker.fruitStockObservable(of: .watermelon)
-            .map{String($0)}
-            .subscribe(onNext: {[weak self] stock in
-                self?.watermelonStockObservable.onNext(stock)
-                self?.initialStrawberryStock = Int(stock)!
-            })
-            .disposed(by: disposeBag)
-        
-        juiceMaker.fruitStockObservable(of: .banana)
-            .map{String($0)}
-            .subscribe(onNext: {[weak self] stock in
-                self?.bananaStockObservable.onNext(stock)
-                self?.initialStrawberryStock = Int(stock)!
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    // MARK: - UserNotification
-    
-    struct UserNotification {
-        var title = "더 이상 줄일 수 없어요"
-        var ok = "확인"
-    }
-    
+  
 }
 
+struct UserNotification {
+    var title = "더 이상 줄일 수 없어요"
+    var ok = "확인"
+}

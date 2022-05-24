@@ -118,11 +118,8 @@ struct JuiceMaker {
     
 }
 
-extension JuiceMaker {
+enum FruitStockModification {
     
-    enum FruitStockModification {
-        
-        case success
-        case deficientFruitStockFailure
-    }
+    case success
+    case deficientFruitStockFailure
 }

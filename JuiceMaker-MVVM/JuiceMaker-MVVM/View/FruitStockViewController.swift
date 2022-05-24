@@ -31,6 +31,7 @@ class FruitStockViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private lazy var input = FruitStockViewModel.Input(
+        viewWillAppear: self.rx.methodInvoked(#selector(UIViewController.viewWillAppear)),
         strawberryStepperValueObservable: self.strawberryStepper?.rx.value.asObservable(),
         peachStepperValueObservable: self.peachStepper?.rx.value.asObservable(),
         pineappeldStepperValueObservable: self.pineappleStepper?.rx.value.asObservable(),
@@ -50,7 +51,21 @@ class FruitStockViewController: UIViewController {
     // MARK: - bind
     
     func bindUI() {
-        self.output.strawberryStockObservable
+//        self.fruitStockViewModel.strawberryStockObservable?
+//            .debug()
+//            .subscribe(onNext: {stock in
+//                self.strawberryStockLabel?.text = stock
+//        })
+//        .disposed(by: disposeBag)
+//        
+        self.output.notificationObservable?
+            .debug()
+            .subscribe { userNotification in
+                let notification = userNotification.element
+                print("\(String(describing: notification?.title))")
+            }.disposed(by: disposeBag)
+        
+        self.output.strawberryStockObservable?
             .subscribe(onNext: {[weak self] stock in
                 self?.strawberryStockLabel?.text = stock
             })
