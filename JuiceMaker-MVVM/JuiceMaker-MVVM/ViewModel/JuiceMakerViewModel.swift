@@ -36,7 +36,8 @@ struct JuiceMakerViewModel {
         let orderSuccess = BehaviorSubject<Bool>(value: true)
         let alertMessage = BehaviorSubject<String>(value: "")
         
-        input.juiceOrder.map { fruitJuice in
+        input.juiceOrder
+            .map { fruitJuice in
             self.juiceMaker.makeJuice(fruitJuice)}
         .subscribe(onNext: {juiceObservable in
             juiceObservable

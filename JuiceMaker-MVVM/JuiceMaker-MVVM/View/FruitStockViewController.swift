@@ -31,7 +31,6 @@ class FruitStockViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private lazy var input = FruitStockViewModel.Input(
-        viewWillAppear: self.rx.methodInvoked(#selector(UIViewController.viewWillAppear)),
         strawberryStepperValueObservable: self.strawberryStepper?.rx.value.asObservable(),
         peachStepperValueObservable: self.peachStepper?.rx.value.asObservable(),
         pineappeldStepperValueObservable: self.pineappleStepper?.rx.value.asObservable(),
@@ -57,33 +56,38 @@ class FruitStockViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         self.output.strawberryStockObservable?
-            .subscribe(onNext: {[weak self] stock in
-                self?.strawberryStockLabel?.text = stock
+            .withUnretained(self)
+            .subscribe(onNext: {(owner, stock) in
+                self.strawberryStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
         
         self.output.peachStockObservable?
-            .subscribe(onNext: {[weak self] stock in
-                self?.peachStockLabel?.text = stock
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, stock) in
+                self.peachStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
         
         self.output.pineappleStockObservable?
-            .subscribe(onNext: {[weak self] stock in
-                self?.pineappleStockLabel?.text = stock
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, stock) in
+                self.pineappleStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
         
         self.output.watermelonStockObservable?
-            .subscribe(onNext: {[weak self] stock in
-                self?.watermelonStockLabel?.text = stock
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, stock) in
+                self.watermelonStockLabel?.text = stock
                 
             })
             .disposed(by: disposeBag)
         
         self.output.bananaStockObservable?
-            .subscribe(onNext: {[weak self] stock in
-                self?.bananaStockLabel?.text = stock
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, stock) in
+                self.bananaStockLabel?.text = stock
                 
             })
             .disposed(by: disposeBag)

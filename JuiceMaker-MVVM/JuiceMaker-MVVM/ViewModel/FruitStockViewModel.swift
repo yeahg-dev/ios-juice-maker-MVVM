@@ -47,10 +47,11 @@ class FruitStockViewModel {
         
         let strawberryStockModificationObservable = input.strawberryStepperValueObservable?
             .map{Int($0)}
-            .map({ [weak self] stepperValue in
-                stepperValue + (self?.initialStrawberryStock ?? 10)
+            .map({ stepperValue in
+                stepperValue + 10
             })
-            .flatMap({ stock in
+            .withUnretained(self)
+            .flatMap({ (owner, stock) in
                 self.juiceMaker.modifiedFruitStockObservable(of: .strawberry, with: stock)
             })
             .share(replay: 1)
@@ -72,10 +73,11 @@ class FruitStockViewModel {
         
         let peachStockModificationObservable = input.peachStepperValueObservable?
             .map{Int($0)}
-            .map({ [weak self] stepperValue in
-                stepperValue + (self?.initialPeachStock ?? 10)
+            .map({ stepperValue in
+                stepperValue + 10
             })
-            .flatMap({ stock in
+            .withUnretained(self)
+            .flatMap({ (owner, stock) in
                 self.juiceMaker.modifiedFruitStockObservable(of: .peach, with: stock)
             })
             .share(replay: 1)
@@ -97,10 +99,11 @@ class FruitStockViewModel {
         
         let pineappleStockModificationObservable = input.pineappeldStepperValueObservable?
             .map{Int($0)}
-            .map({ [weak self] stepperValue in
-                stepperValue + (self?.initialPineappleStock ?? 10)
+            .map({ stepperValue in
+                stepperValue + 10
             })
-            .flatMap({ stock in
+            .withUnretained(self)
+            .flatMap({ (owner, stock) in
                 self.juiceMaker.modifiedFruitStockObservable(of: .pineapple, with: stock)
             })
             .share(replay: 1)
@@ -122,10 +125,11 @@ class FruitStockViewModel {
         
         let watermelonStockModificationObservable = input.watermelonStepperValueObservable?
             .map{Int($0)}
-            .map({ [weak self] stepperValue in
-                stepperValue + (self?.initialWatermelonStock ?? 10)
+            .map({ stepperValue in
+                stepperValue + 10
             })
-            .flatMap({ stock in
+            .withUnretained(self)
+            .flatMap({ (owner, stock) in
                 self.juiceMaker.modifiedFruitStockObservable(of: .watermelon, with: stock)
             })
             .share(replay: 1)
@@ -147,10 +151,11 @@ class FruitStockViewModel {
         
         let bananaStockModificationObservable = input.bananaStepperValueObservable?
             .map{Int($0)}
-            .map({ [weak self] stepperValue in
-                stepperValue + (self?.initialBananaStock ?? 10)
+            .map({ stepperValue in
+                stepperValue + 10
             })
-            .flatMap({ stock in
+            .withUnretained(self)
+            .flatMap({ (owner, stock) in
                 self.juiceMaker.modifiedFruitStockObservable(of: .banana, with: stock)
             })
             .share(replay: 1)

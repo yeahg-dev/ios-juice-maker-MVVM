@@ -38,8 +38,10 @@ class JuiceMakerViewController: UIViewController {
     // MARK: - bind UI
     
     private func bindUI() {
-        output.orderSuccess.subscribe(onNext: {[weak self] result in
-            self?.loadFruitStock()
+        output.orderSuccess
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, result) in
+            self.loadFruitStock()
             
         })
         .disposed(by: disposeBag)
@@ -71,7 +73,7 @@ class JuiceMakerViewController: UIViewController {
             label = self.watermelonStockLabel
         }
         
-        juiceMakerViewModel.fruitStockObservable(of: fruit)
+        self.juiceMakerViewModel.fruitStockObservable(of: fruit)
             .map{String($0)}
             .subscribe(onNext: { stock in
                 label?.text = stock
