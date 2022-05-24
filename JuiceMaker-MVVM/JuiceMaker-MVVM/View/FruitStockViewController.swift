@@ -45,21 +45,12 @@ class FruitStockViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.bindUI()
-        self.fruitStockViewModel.loadStock()
     }
     
     // MARK: - bind
     
-    func bindUI() {
-//        self.fruitStockViewModel.strawberryStockObservable?
-//            .debug()
-//            .subscribe(onNext: {stock in
-//                self.strawberryStockLabel?.text = stock
-//        })
-//        .disposed(by: disposeBag)
-//        
+    func bindUI() {     
         self.output.notificationObservable?
-            .debug()
             .subscribe { userNotification in
                 let notification = userNotification.element
                 print("\(String(describing: notification?.title))")
@@ -71,26 +62,26 @@ class FruitStockViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        self.output.peachStockObservable
+        self.output.peachStockObservable?
             .subscribe(onNext: {[weak self] stock in
                 self?.peachStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
         
-        self.output.pineappleStockObservable
+        self.output.pineappleStockObservable?
             .subscribe(onNext: {[weak self] stock in
                 self?.pineappleStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
         
-        self.output.watermelonStockObservable
+        self.output.watermelonStockObservable?
             .subscribe(onNext: {[weak self] stock in
                 self?.watermelonStockLabel?.text = stock
                 
             })
             .disposed(by: disposeBag)
         
-        self.output.bananaStockObservable
+        self.output.bananaStockObservable?
             .subscribe(onNext: {[weak self] stock in
                 self?.bananaStockLabel?.text = stock
                 

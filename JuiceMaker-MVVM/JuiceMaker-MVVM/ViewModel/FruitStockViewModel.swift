@@ -24,7 +24,6 @@ class FruitStockViewModel {
     
     // MARK: - Input/Output
     struct Input {
-        let viewWillAppear: Observable<[Any]>
         let strawberryStepperValueObservable: Observable<Double>?
         let peachStepperValueObservable: Observable<Double>?
         let pineappeldStepperValueObservable: Observable<Double>?
@@ -34,10 +33,10 @@ class FruitStockViewModel {
     
     struct Output {
         let strawberryStockObservable: Observable<String>?
-        let peachStockObservable: Observable<String?>
-        let pineappleStockObservable: Observable<String?>
-        let watermelonStockObservable: Observable<String?>
-        let bananaStockObservable: Observable<String?>
+        let peachStockObservable: Observable<String>?
+        let pineappleStockObservable: Observable<String>?
+        let watermelonStockObservable: Observable<String>?
+        let bananaStockObservable: Observable<String>?
         let notificationObservable: Observable<UserNotification>?
     }
     
@@ -96,7 +95,7 @@ class FruitStockViewModel {
             .map{ stock in
                 String(stock) }
         
-        let pineappleStockModificationObservable = input.pineappleStepperValueObservable?
+        let pineappleStockModificationObservable = input.pineappeldStepperValueObservable?
             .map{Int($0)}
             .map({ [weak self] stepperValue in
                 stepperValue + (self?.initialPineappleStock ?? 10)
