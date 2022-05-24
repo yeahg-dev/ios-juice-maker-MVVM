@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-class FruitRepository {
+final class FruitRepository {
     
     // MARK: - Property
     

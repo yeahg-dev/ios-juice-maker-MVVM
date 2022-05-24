@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-class FruitStockViewModel {
+final class FruitStockViewModel {
     
     // MARK: - Property
     
