@@ -48,7 +48,7 @@ class FruitStockViewController: UIViewController {
     
     // MARK: - bind
     
-    func bindUI() {     
+    private func bindUI() {     
         self.output.notificationObservable?
             .subscribe { userNotification in
                 let notification = userNotification.element
