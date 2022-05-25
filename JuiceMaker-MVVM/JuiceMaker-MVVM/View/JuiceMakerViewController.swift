@@ -124,7 +124,6 @@ class JuiceMakerViewController: UIViewController {
         }
         
         self.juiceMakerViewModel.fruitStockObservable(of: fruit)
-            .map{String($0)}
             .subscribe(onNext: { stock in
                 label?.text = stock
             })

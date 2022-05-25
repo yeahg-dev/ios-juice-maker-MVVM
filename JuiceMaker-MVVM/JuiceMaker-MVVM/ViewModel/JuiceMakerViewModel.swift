@@ -28,8 +28,8 @@ struct JuiceMakerViewModel {
     
     // MARK: - bindViewModel
     
-    func fruitStockObservable(of fruit: Fruit) -> Observable<Int> {
-        return juiceMaker.fruitStockObservable(of: fruit)
+    func fruitStockObservable(of fruit: Fruit) -> Observable<String> {
+        return juiceMaker.fruitStockObservable(of: fruit).map{String($0)}
     }
     
     func transfrom(input: Input) -> Output {
