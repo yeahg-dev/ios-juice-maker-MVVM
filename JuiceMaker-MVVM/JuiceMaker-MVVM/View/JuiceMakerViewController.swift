@@ -21,10 +21,6 @@ class JuiceMakerViewController: UIViewController {
     // MARK: - Property
     
     private let juiceMakerViewModel = JuiceMakerViewModel()
-    
-    private lazy var input = JuiceMakerViewModel.Input(juiceOrder: PublishSubject<FruitJuice>())
-    private lazy var output = juiceMakerViewModel.transfrom(input: input)
-    
     private let disposeBag = DisposeBag()
     
     // MARK: - View Life Cycle

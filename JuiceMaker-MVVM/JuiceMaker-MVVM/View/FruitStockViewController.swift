@@ -30,15 +30,6 @@ class FruitStockViewController: UIViewController {
     private var fruitStockViewModel = FruitStockViewModel()
     private let disposeBag = DisposeBag()
     
-    private lazy var input = FruitStockViewModel.Input(
-        strawberryStepperValueObservable: self.strawberryStepper?.rx.value.asObservable(),
-        peachStepperValueObservable: self.peachStepper?.rx.value.asObservable(),
-        pineappeldStepperValueObservable: self.pineappleStepper?.rx.value.asObservable(),
-        watermelonStepperValueObservable: self.watermelonStepper?.rx.value.asObservable(),
-        bananaStepperValueObservable: self.bananaStepper?.rx.value.asObservable())
-    
-    private lazy var output = fruitStockViewModel.transform(input: input)
-    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -48,35 +39,44 @@ class FruitStockViewController: UIViewController {
     
     // MARK: - bind
     
-    private func bindUI() {     
-        self.output.notificationObservable?
+    private func bindUI() {
+        let input = FruitStockViewModel.Input(
+            strawberryStepperValueObservable: self.strawberryStepper?.rx.value.asObservable(),
+            peachStepperValueObservable: self.peachStepper?.rx.value.asObservable(),
+            pineappeldStepperValueObservable: self.pineappleStepper?.rx.value.asObservable(),
+            watermelonStepperValueObservable: self.watermelonStepper?.rx.value.asObservable(),
+            bananaStepperValueObservable: self.bananaStepper?.rx.value.asObservable())
+        
+        let output = fruitStockViewModel.transform(input: input)
+        
+        output.notificationObservable?
             .subscribe { userNotification in
                 let notification = userNotification.element
                 print("\(String(describing: notification?.title))")
             }.disposed(by: disposeBag)
         
-        self.output.strawberryStockObservable?
+        output.strawberryStockObservable?
             .withUnretained(self)
             .subscribe(onNext: {(owner, stock) in
                 self.strawberryStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
         
-        self.output.peachStockObservable?
+        output.peachStockObservable?
             .withUnretained(self)
             .subscribe(onNext: { (owner, stock) in
                 self.peachStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
         
-        self.output.pineappleStockObservable?
+        output.pineappleStockObservable?
             .withUnretained(self)
             .subscribe(onNext: { (owner, stock) in
                 self.pineappleStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
         
-        self.output.watermelonStockObservable?
+        output.watermelonStockObservable?
             .withUnretained(self)
             .subscribe(onNext: { (owner, stock) in
                 self.watermelonStockLabel?.text = stock
@@ -84,7 +84,7 @@ class FruitStockViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        self.output.bananaStockObservable?
+        output.bananaStockObservable?
             .withUnretained(self)
             .subscribe(onNext: { (owner, stock) in
                 self.bananaStockLabel?.text = stock
