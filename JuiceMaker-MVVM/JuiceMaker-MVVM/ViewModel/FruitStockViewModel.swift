@@ -13,16 +13,11 @@ final class FruitStockViewModel {
     // MARK: - Property
     
     private let juiceMaker = JuiceMaker()
-    private let disposeBag = DisposeBag()
     
-    // TODO: - 삭제
-    var initialStrawberryStock: Int?
-    var initialPeachStock: Int?
-    var initialPineappleStock: Int?
-    var initialWatermelonStock: Int?
-    var initialBananaStock: Int?
-    
+    private let userNotification = PublishSubject<UserNotification>()
+
     // MARK: - Input/Output
+    
     struct Input {
         let strawberryStepperValueObservable: Observable<Double>?
         let peachStepperValueObservable: Observable<Double>?
@@ -43,147 +38,71 @@ final class FruitStockViewModel {
     // MARK: - bindViewModel
     
     func transform(input: Input) -> Output {
-        let userNotificationObservable = PublishSubject<UserNotification>()
-        
-        let strawberryStockModificationObservable = input.strawberryStepperValueObservable?
-            .map{Int($0)}
-            .map({ stepperValue in
-                stepperValue + 10
-            })
-            .withUnretained(self)
-            .flatMap({ (owner, stock) in
-                self.juiceMaker.modifiedFruitStockObservable(of: .strawberry, with: stock)
-            })
-            .share(replay: 1)
-            
-        let strawberryStockObservable = strawberryStockModificationObservable?
-            .do(onNext: { modificationResult in
-                if modificationResult == .deficientFruitStockFailure {
-                    userNotificationObservable.onNext(UserNotification())
-                }
-            })
-            .filter({ stockModificationResult in
-                stockModificationResult == FruitStockModification.success
-            })
-            .flatMap{ _ -> Observable<Int> in
-                self.juiceMaker.fruitStockObservable(of: .strawberry)
-            }
-            .map{ stock in
-                String(stock) }
-        
-        let peachStockModificationObservable = input.peachStepperValueObservable?
-            .map{Int($0)}
-            .map({ stepperValue in
-                stepperValue + 10
-            })
-            .withUnretained(self)
-            .flatMap({ (owner, stock) in
-                self.juiceMaker.modifiedFruitStockObservable(of: .peach, with: stock)
-            })
-            .share(replay: 1)
-            
-        let peachStockObservable = peachStockModificationObservable?
-            .do(onNext: { modificationResult in
-                if modificationResult == .deficientFruitStockFailure {
-                    userNotificationObservable.onNext(UserNotification())
-                }
-            })
-            .filter({ stockModificationResult in
-                stockModificationResult == FruitStockModification.success
-            })
-            .flatMap{ _ -> Observable<Int> in
-                self.juiceMaker.fruitStockObservable(of: .peach)
-            }
-            .map{ stock in
-                String(stock) }
-        
-        let pineappleStockModificationObservable = input.pineappeldStepperValueObservable?
-            .map{Int($0)}
-            .map({ stepperValue in
-                stepperValue + 10
-            })
-            .withUnretained(self)
-            .flatMap({ (owner, stock) in
-                self.juiceMaker.modifiedFruitStockObservable(of: .pineapple, with: stock)
-            })
-            .share(replay: 1)
-        
-        let pineappleStockObservable = pineappleStockModificationObservable?
-            .do(onNext: { modificationResult in
-                if modificationResult == .deficientFruitStockFailure {
-                    userNotificationObservable.onNext(UserNotification())
-                }
-            })
-            .filter({ stockModificationResult in
-                stockModificationResult == FruitStockModification.success
-            })
-            .flatMap{ _ -> Observable<Int> in
-                self.juiceMaker.fruitStockObservable(of: .pineapple)
-            }
-            .map{ stock in
-                String(stock) }
-        
-        let watermelonStockModificationObservable = input.watermelonStepperValueObservable?
-            .map{Int($0)}
-            .map({ stepperValue in
-                stepperValue + 10
-            })
-            .withUnretained(self)
-            .flatMap({ (owner, stock) in
-                self.juiceMaker.modifiedFruitStockObservable(of: .watermelon, with: stock)
-            })
-            .share(replay: 1)
-        
-        let watermelonStockObservable = watermelonStockModificationObservable?
-            .do(onNext: { modificationResult in
-                if modificationResult == .deficientFruitStockFailure {
-                    userNotificationObservable.onNext(UserNotification())
-                }
-            })
-            .filter({ stockModificationResult in
-                stockModificationResult == FruitStockModification.success
-            })
-            .flatMap{ _ -> Observable<Int> in
-                self.juiceMaker.fruitStockObservable(of: .watermelon)
-            }
-            .map{ stock in
-                String(stock) }
-        
-        let bananaStockModificationObservable = input.bananaStepperValueObservable?
-            .map{Int($0)}
-            .map({ stepperValue in
-                stepperValue + 10
-            })
-            .withUnretained(self)
-            .flatMap({ (owner, stock) in
-                self.juiceMaker.modifiedFruitStockObservable(of: .banana, with: stock)
-            })
-            .share(replay: 1)
-        
-        let bananaStockObservable = bananaStockModificationObservable?
-            .do(onNext: { modificationResult in
-                if modificationResult == .deficientFruitStockFailure {
-                    userNotificationObservable.onNext(UserNotification())
-                }
-            })
-            .filter({ stockModificationResult in
-                stockModificationResult == FruitStockModification.success
-            })
-            .flatMap{ _ -> Observable<Int> in
-                self.juiceMaker.fruitStockObservable(of: .banana)
-            }
-            .map{ stock in
-                String(stock) }
-     
-
-        return Output(strawberryStockObservable: strawberryStockObservable,
-                      peachStockObservable: peachStockObservable,
-                      pineappleStockObservable: pineappleStockObservable,
-                      watermelonStockObservable: watermelonStockObservable,
-                      bananaStockObservable: bananaStockObservable,
-                      notificationObservable: userNotificationObservable)
+        let strawberryStock = updatedFruitStock(of: .strawberry, input: input)
+        let peachStock = updatedFruitStock(of: .peach, input: input)
+        let pineappleStock = updatedFruitStock(of: .pineapple, input: input)
+        let watermelonStock = updatedFruitStock(of: .watermelon, input: input)
+        let bananaStock = updatedFruitStock(of: .banana, input: input)
+       
+        return Output(strawberryStockObservable: strawberryStock,
+                      peachStockObservable: peachStock,
+                      pineappleStockObservable: pineappleStock,
+                      watermelonStockObservable: watermelonStock,
+                      bananaStockObservable: bananaStock,
+                      notificationObservable: userNotification)
     }
-  
+    
+    private func updatedFruitStock(of fruit: Fruit, input: Input) -> Observable<String> {
+        var initialStock: Observable<Int>
+        var stepperValue: Observable<Int>
+        var stockUpdateResult: Observable<FruitStockModification>
+        var updatedStock: Observable<String>
+        
+        initialStock = self.juiceMaker.fruitStockObservable(of: fruit).take(1)
+        
+        switch fruit {
+        case .strawberry:
+            stepperValue = input.strawberryStepperValueObservable?
+                .map{Int($0)} ?? Observable<Int>.just(0)
+        case .peach:
+            stepperValue = input.peachStepperValueObservable?
+                .map{Int($0)} ?? Observable<Int>.just(0)
+          
+        case .banana:
+            stepperValue = input.bananaStepperValueObservable?
+                .map{Int($0)} ?? Observable<Int>.just(0)
+        case .pineapple:
+            stepperValue = input.pineappeldStepperValueObservable?
+                .map{Int($0)} ?? Observable<Int>.just(0)
+        case .watermelon:
+            stepperValue = input.watermelonStepperValueObservable?
+                .map{Int($0)} ?? Observable<Int>.just(0)
+        }
+        
+        stockUpdateResult = Observable<Int>
+            .combineLatest(initialStock, stepperValue){ $0 + $1}
+            .flatMap {
+            self.juiceMaker.modifiedFruitStockObservable(of: fruit, with: $0)
+            }
+            .share(replay: 1)
+        
+        updatedStock = stockUpdateResult
+            .withUnretained(self)
+            .do(onNext: { (owner, result) in
+                if result == .deficientFruitStockFailure {
+                    self.userNotification.onNext(UserNotification())
+                }
+            })
+            .filter({ (owner, result) in
+                result == FruitStockModification.success
+            })
+            .flatMap{ _ -> Observable<Int> in
+                self.juiceMaker.fruitStockObservable(of: fruit)
+            }
+            .map{String($0)}
+        
+        return updatedStock
+    }
 }
 
 struct UserNotification {
