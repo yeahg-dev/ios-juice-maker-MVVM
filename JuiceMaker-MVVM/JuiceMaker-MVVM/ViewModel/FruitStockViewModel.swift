@@ -82,7 +82,7 @@ final class FruitStockViewModel {
         stockUpdateResult = Observable<Int>
             .combineLatest(initialStock, stepperValue){ $0 + $1}
             .flatMap {
-            self.juiceMaker.modifiedFruitStockObservable(of: fruit, with: $0)
+            self.juiceMaker.modifyFruitStock(of: fruit, with: $0)
             }
             .share(replay: 1)
         

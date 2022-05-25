@@ -72,27 +72,27 @@ struct JuiceMaker {
         }
     }
     
-    func modifiedFruitStockObservable(
+    func modifyFruitStock(
         of fruit: Fruit,
         with newValue: Int
     ) -> Observable<FruitStockModification> {
-        Observable<FruitStockModification>.create { observer in
-            self.isAbleToModifyFruitStock(of: fruit, with: newValue)
-                .subscribe { result in
-                    if result.element == true {
-                        self.requestModifyFruitStock(of: fruit, with: newValue)
-                            .subscribe(onNext: {result in
-                                if result == FruitRepository.Result.success {
-                                    observer.onNext(FruitStockModification.success)}
-                            })
-                            .disposed(by: disposeBag)
-                    } else if result.element == false {
-                        observer.onNext(FruitStockModification.deficientFruitStockFailure)
-                    }
+        let isAbleToModifyFruitStock = self.isAbleToModifyFruitStock(of: fruit, with: newValue)
+        
+        let fruitStockModification = isAbleToModifyFruitStock
+            .flatMap { bool -> Observable<FruitStockModification> in
+                if bool == true {
+                    return self.updateFruitRepository(of: fruit, with: newValue)
+                        .filter { bool in
+                            bool == true
+                        }
+                        .flatMap { _ in
+                            Observable<FruitStockModification>.just(.success)
+                        }
+                } else {
+                    return Observable<FruitStockModification>.just(.deficientFruitStockFailure)
                 }
-                .disposed(by: disposeBag)
-            return Disposables.create()
-        }
+            }
+        return fruitStockModification
     }
     
     private func isAbleToModifyFruitStock(
@@ -109,17 +109,27 @@ struct JuiceMaker {
         }
     }
     
-    private func requestModifyFruitStock(
+    private func updateFruitRepository(
         of fruit: Fruit,
         with newValue: Int
-    ) -> Observable<FruitRepository.Result> {
+    ) -> Observable<Bool> {
         return self.fruitRepository.update(fruit, with: newValue)
     }
     
 }
 
-enum FruitStockModification {
+enum FruitStockModification: ObservableConvertibleType {
+    typealias Element = Self
     
     case success
     case deficientFruitStockFailure
+    
+    func asObservable() -> Observable<FruitStockModification> {
+        switch self {
+        case .success:
+            return Observable<FruitStockModification>.just(.success)
+        case .deficientFruitStockFailure:
+            return Observable<FruitStockModification>.just(.deficientFruitStockFailure)
+        }
+    }
 }
