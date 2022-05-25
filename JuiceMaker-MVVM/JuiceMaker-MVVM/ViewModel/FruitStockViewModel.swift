@@ -38,11 +38,11 @@ final class FruitStockViewModel {
     // MARK: - bindViewModel
     
     func transform(input: Input) -> Output {
-        let strawberryStock = updatedFruitStock(of: .strawberry, input: input)
-        let peachStock = updatedFruitStock(of: .peach, input: input)
-        let pineappleStock = updatedFruitStock(of: .pineapple, input: input)
-        let watermelonStock = updatedFruitStock(of: .watermelon, input: input)
-        let bananaStock = updatedFruitStock(of: .banana, input: input)
+        let strawberryStock = transform(of: .strawberry, input: input)
+        let peachStock = transform(of: .peach, input: input)
+        let pineappleStock = transform(of: .pineapple, input: input)
+        let watermelonStock = transform(of: .watermelon, input: input)
+        let bananaStock = transform(of: .banana, input: input)
        
         return Output(strawberryStockObservable: strawberryStock,
                       peachStockObservable: peachStock,
@@ -52,7 +52,7 @@ final class FruitStockViewModel {
                       notificationObservable: userNotification)
     }
     
-    private func updatedFruitStock(of fruit: Fruit, input: Input) -> Observable<String> {
+    private func transform(of fruit: Fruit, input: Input) -> Observable<String> {
         var initialStock: Observable<Int>
         var stepperValue: Observable<Int>
         var stockUpdateResult: Observable<FruitStockModification>
