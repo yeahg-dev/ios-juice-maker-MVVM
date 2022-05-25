@@ -36,7 +36,6 @@ class JuiceMakerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.loadFruitStock()
         self.bindUI()
     }
     
@@ -44,7 +43,9 @@ class JuiceMakerViewController: UIViewController {
     
     private func bindUI() {
         let juiceOrder = PublishSubject<FruitJuice>()
-        let input = JuiceMakerViewModel.Input(juiceOrder: juiceOrder)
+        let input = JuiceMakerViewModel.Input(
+            viewWillAppear: self.rx.methodInvoked(#selector(UIViewController.viewWillAppear(_:))).map{_ in},
+            juiceOrder: juiceOrder)
         let output = juiceMakerViewModel.transfrom(input: input)
         
         self.strawberryJuiceButton?.rx.tap
@@ -89,12 +90,35 @@ class JuiceMakerViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        output.orderSuccess
-            .withUnretained(self)
-            .subscribe(onNext: { (owner, result) in
-            self.loadFruitStock()
-        })
-        .disposed(by: disposeBag)
+        output.strawberryStock
+            .subscribe(onNext: {stock in
+                self.strawberryStockLabel?.text = stock
+            })
+            .disposed(by: disposeBag)
+        
+        output.peachStock
+            .subscribe(onNext: {stock in
+                self.peachStockLabel?.text = stock
+            })
+            .disposed(by: disposeBag)
+        
+        output.pineappleStock
+            .subscribe(onNext: {stock in
+                self.pineappleStockLabel?.text = stock
+            })
+            .disposed(by: disposeBag)
+        
+        output.watermelonStock
+            .subscribe(onNext: {stock in
+                self.watermelonStockLabel?.text = stock
+            })
+            .disposed(by: disposeBag)
+        
+        output.bananaStock
+            .subscribe(onNext: {stock in
+                self.bananaStockLabel?.text = stock
+            })
+            .disposed(by: disposeBag)
         
         output.alertMessage.subscribe(onNext: {string in
             //TODO: - Alert 구현
@@ -102,33 +126,5 @@ class JuiceMakerViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
-    private func loadFruitStock() {
-        Fruit.allCases.forEach {[weak self] fruit in
-            self?.loadStock(of: fruit)
-        }
-    }
-    
-    private func loadStock(of fruit: Fruit) {
-        var label: UILabel?
-        switch fruit {
-        case .strawberry:
-            label = self.strawberryStockLabel
-        case .peach:
-            label = self.peachStockLabel
-        case .banana:
-            label = self.bananaStockLabel
-        case .pineapple:
-            label = self.pineappleStockLabel
-        case .watermelon:
-            label = self.watermelonStockLabel
-        }
-        
-        self.juiceMakerViewModel.fruitStockObservable(of: fruit)
-            .subscribe(onNext: { stock in
-                label?.text = stock
-            })
-            .disposed(by: disposeBag)
-    }
- 
 }
 

@@ -18,23 +18,51 @@ struct JuiceMakerViewModel {
     // MARK: - Input/Output
     
     struct Input {
+        let viewWillAppear: Observable<Void>
         let juiceOrder: PublishSubject<FruitJuice>
     }
     
     struct Output {
-        let orderSuccess: BehaviorSubject<Bool>
+        let strawberryStock: PublishSubject<String>
+        let peachStock: PublishSubject<String>
+        let pineappleStock: PublishSubject<String>
+        let watermelonStock: PublishSubject<String>
+        let bananaStock: PublishSubject<String>
         let alertMessage: BehaviorSubject<String>
     }
     
     // MARK: - bindViewModel
     
-    func fruitStockObservable(of fruit: Fruit) -> Observable<String> {
-        return juiceMaker.fruitStockObservable(of: fruit).map{String($0)}
-    }
-    
     func transfrom(input: Input) -> Output {
-        let orderSuccess = BehaviorSubject<Bool>(value: true)
+        let strawberryStock = PublishSubject<String>()
+        let peachStock = PublishSubject<String>()
+        let pineappleStock = PublishSubject<String>()
+        let watermelonStock = PublishSubject<String>()
+        let bananaStock = PublishSubject<String>()
         let alertMessage = BehaviorSubject<String>(value: "")
+        
+        input.viewWillAppear.subscribe(onNext:{
+            self.fruitStock(of: .strawberry)
+                .bind{ stock in
+                    strawberryStock.onNext(stock)
+                }.dispose()
+            self.fruitStock(of: .peach)
+                .bind{ stock in
+                    peachStock.onNext(stock)
+                }.dispose()
+            self.fruitStock(of: .pineapple)
+                .bind{ stock in
+                    pineappleStock.onNext(stock)
+                }.dispose()
+            self.fruitStock(of: .watermelon)
+                .bind{ stock in
+                    watermelonStock.onNext(stock)
+                }.dispose()
+            self.fruitStock(of: .banana)
+                .bind{ stock in
+                    bananaStock.onNext(stock)
+                }.dispose()
+        }).disposed(by: disposeBag)
         
         input.juiceOrder
             .map { fruitJuice in
@@ -43,11 +71,27 @@ struct JuiceMakerViewModel {
             juiceObservable
                 .subscribe(onNext: { juice in
                     if juice != nil {
-                        orderSuccess.onNext(true)
-                        alertMessage.onNext(UserNotification.orderSucces(of: juice))
-                        print("💖\(String(describing: juice))")
+                        self.fruitStock(of: .strawberry)
+                            .bind{ stock in
+                                strawberryStock.onNext(stock)
+                            }.dispose()
+                        self.fruitStock(of: .peach)
+                            .bind{ stock in
+                                peachStock.onNext(stock)
+                            }.dispose()
+                        self.fruitStock(of: .pineapple)
+                            .bind{ stock in
+                                pineappleStock.onNext(stock)
+                            }.dispose()
+                        self.fruitStock(of: .watermelon)
+                            .bind{ stock in
+                                watermelonStock.onNext(stock)
+                            }.dispose()
+                        self.fruitStock(of: .banana)
+                            .bind{ stock in
+                                bananaStock.onNext(stock)
+                            }.dispose()
                     } else {
-                        orderSuccess.onNext(false)
                         alertMessage.onNext(UserNotification.orderFailure.rawValue)
                         print("👻재료 모자람")
                     }})
@@ -55,7 +99,16 @@ struct JuiceMakerViewModel {
         })
         .disposed(by: disposeBag)
         
-        return Output(orderSuccess: orderSuccess, alertMessage: alertMessage)
+        return Output(strawberryStock: strawberryStock,
+                      peachStock: peachStock,
+                      pineappleStock: pineappleStock,
+                      watermelonStock: watermelonStock,
+                      bananaStock: bananaStock,
+                      alertMessage: alertMessage)
+    }
+    
+    private func fruitStock(of fruit: Fruit) -> Observable<String> {
+        self.juiceMaker.fruitStockObservable(of: fruit).map{String($0)}
     }
     
     // MARK: - UserNotification
