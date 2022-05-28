@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import UIKit
 
 struct JuiceMaker {
     
@@ -21,21 +22,28 @@ struct JuiceMaker {
         fruitRepository.read(fruit)
     }
     
-    // TODO: - 역할 분리
-    func makeJuice(_ juice: FruitJuice) -> Observable<FruitJuice?> {
-        let numberOfFruitToCheck = juice.ingredients.count
+    func makeJuice(_ juice: FruitJuice) -> Observable<FruitJuice> {
+        let camMakeJuice = self.hasSufficentIngredients(of: juice)
         
-        // Subject내 아이템이 모두 true일 경우에만 FruitJuice 방출
-        let juiceObservable = self.hasSufficentIngredients(of: juice)
-            .map({result in result == true ? juice : nil})
-            .do(onNext: { juice in
-                guard let juiceToMake = juice else {
-                   return
+        let juice = camMakeJuice
+            .do(onNext: { bool in
+                if bool == true {
+                    self.consumeIngredients(of: juice)
                 }
-                self.consumeIngredients(of: juiceToMake)
             })
+            .flatMap { bool in
+                Observable<FruitJuice>.create { emitter in
+                    switch bool {
+                    case true:
+                        emitter.onNext(juice)
+                    case false:
+                        emitter.onError(JuiceMakerError.juiceProductionFailure)
+                    }
+                    return Disposables.create()
+                }
+            }
                 
-        return juiceObservable
+        return juice
     }
     
     private func hasSufficentIngredients(of juice: FruitJuice) -> Observable<Bool> {
@@ -133,4 +141,9 @@ enum FruitStockModification: ObservableConvertibleType {
             return Observable<FruitStockModification>.just(.deficientFruitStockFailure)
         }
     }
+}
+
+enum JuiceMakerError: Error {
+    
+    case juiceProductionFailure
 }

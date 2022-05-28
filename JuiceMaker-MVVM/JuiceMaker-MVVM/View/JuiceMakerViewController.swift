@@ -42,53 +42,17 @@ class JuiceMakerViewController: UIViewController {
     // MARK: - bind UI
     
     private func bindUI() {
-        let juiceOrder = PublishSubject<FruitJuice>()
+        
         let input = JuiceMakerViewModel.Input(
             viewWillAppear: self.rx.methodInvoked(#selector(UIViewController.viewWillAppear(_:))).map{_ in},
-            juiceOrder: juiceOrder)
+            strawberryButtonTapped: self.strawberryJuiceButton?.rx.tap.asObservable(),
+            peachButtonTapped: self.peachJuiceButton?.rx.tap.asObservable(),
+            strawberryPeachButtonTapped: self.strawberryPeachJuiceButton?.rx.tap.asObservable(),
+            pineappleButtonTapped: self.pineappleJuiceButton?.rx.tap.asObservable(),
+            watermelonButtonTapped: self.watermelonJuiceButton?.rx.tap.asObservable(),
+            watermelonPineappleButtonTapped: self.watermelonPineappleJuiceButton?.rx.tap.asObservable(),
+            bananaButtonTapped: self.bananaJuiceButton?.rx.tap.asObservable())
         let output = juiceMakerViewModel.transfrom(input: input)
-        
-        self.strawberryJuiceButton?.rx.tap
-            .bind {
-                juiceOrder.onNext(StrawberryJuice())
-            }
-            .disposed(by: disposeBag)
-        
-        self.strawberryPeachJuiceButton?.rx.tap
-            .bind {
-                juiceOrder.onNext(StrawberryPeachJuice())
-            }
-            .disposed(by: disposeBag)
-        
-        self.peachJuiceButton?.rx.tap
-            .bind {
-                juiceOrder.onNext(PeachJuice())
-            }
-            .disposed(by: disposeBag)
-        
-        self.watermelonPineappleJuiceButton?.rx.tap
-            .bind {
-                juiceOrder.onNext(PineappleWatermelonJuice())
-            }
-            .disposed(by: disposeBag)
-        
-        self.watermelonJuiceButton?.rx.tap
-            .bind {
-                juiceOrder.onNext(WatermelonJuice())
-            }
-            .disposed(by: disposeBag)
-        
-        self.pineappleJuiceButton?.rx.tap
-            .bind {
-                juiceOrder.onNext(PineappleJuice())
-            }
-            .disposed(by: disposeBag)
-        
-        self.bananaJuiceButton?.rx.tap
-            .bind {
-                juiceOrder.onNext(BananaJuice())
-            }
-            .disposed(by: disposeBag)
         
         output.strawberryStock
             .subscribe(onNext: {stock in
@@ -120,10 +84,16 @@ class JuiceMakerViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        output.alertMessage.subscribe(onNext: {string in
-            //TODO: - Alert 구현
+        output.alertMessage
+            .debug()
+            .subscribe(onNext: {string in
+                print(string)
         })
         .disposed(by: disposeBag)
+        
+        output.buttonSubscribe
+            .subscribe()
+            .disposed(by: disposeBag)
     }
     
 }

@@ -19,7 +19,13 @@ struct JuiceMakerViewModel {
     
     struct Input {
         let viewWillAppear: Observable<Void>
-        let juiceOrder: PublishSubject<FruitJuice>
+        let strawberryButtonTapped: Observable<Void>?
+        let peachButtonTapped: Observable<Void>?
+        let strawberryPeachButtonTapped: Observable<Void>?
+        let pineappleButtonTapped: Observable<Void>?
+        let watermelonButtonTapped: Observable<Void>?
+        let watermelonPineappleButtonTapped: Observable<Void>?
+        let bananaButtonTapped: Observable<Void>?
     }
     
     struct Output {
@@ -28,7 +34,8 @@ struct JuiceMakerViewModel {
         let pineappleStock: PublishSubject<String>
         let watermelonStock: PublishSubject<String>
         let bananaStock: PublishSubject<String>
-        let alertMessage: BehaviorSubject<String>
+        let buttonSubscribe: Observable<Void>
+        let alertMessage: PublishSubject<String>
     }
     
     // MARK: - bindViewModel
@@ -39,7 +46,8 @@ struct JuiceMakerViewModel {
         let pineappleStock = PublishSubject<String>()
         let watermelonStock = PublishSubject<String>()
         let bananaStock = PublishSubject<String>()
-        let alertMessage = BehaviorSubject<String>(value: "")
+        
+        let alertMessage = PublishSubject<String>()
         
         input.viewWillAppear.subscribe(onNext:{
             self.fruitStock(of: .strawberry)
@@ -64,46 +72,106 @@ struct JuiceMakerViewModel {
                 }.dispose()
         }).disposed(by: disposeBag)
         
-        input.juiceOrder
-            .map { fruitJuice in
-            self.juiceMaker.makeJuice(fruitJuice)}
-        .subscribe(onNext: {juiceObservable in
-            juiceObservable
-                .subscribe(onNext: { juice in
-                    if juice != nil {
-                        self.fruitStock(of: .strawberry)
-                            .bind{ stock in
-                                strawberryStock.onNext(stock)
-                            }.dispose()
-                        self.fruitStock(of: .peach)
-                            .bind{ stock in
-                                peachStock.onNext(stock)
-                            }.dispose()
-                        self.fruitStock(of: .pineapple)
-                            .bind{ stock in
-                                pineappleStock.onNext(stock)
-                            }.dispose()
-                        self.fruitStock(of: .watermelon)
-                            .bind{ stock in
-                                watermelonStock.onNext(stock)
-                            }.dispose()
-                        self.fruitStock(of: .banana)
-                            .bind{ stock in
-                                bananaStock.onNext(stock)
-                            }.dispose()
-                    } else {
-                        alertMessage.onNext(UserNotification.orderFailure.rawValue)
-                        print("👻재료 모자람")
-                    }})
-                .disposed(by: disposeBag)
-        })
-        .disposed(by: disposeBag)
+        let strawberryAction = input.strawberryButtonTapped?
+            .flatMap({
+                self.juiceMaker.makeJuice(StrawberryJuice())
+            })
+            .do(onNext: { juice in
+                let message = UserNotification.orderSucces(of: juice)
+                alertMessage.onNext(message)
+            }, onError: { error in
+                let message = UserNotification.orderFailure.rawValue
+                alertMessage.onNext(message)
+            })
+            .map({ _ in})
+        
+        let peachAction = input.peachButtonTapped?
+                .flatMap({
+                    self.juiceMaker.makeJuice(PeachJuice())
+                })
+                .do(onNext: { juice in
+                    let message = UserNotification.orderSucces(of: juice)
+                    alertMessage.onNext(message)
+                }, onError: { error in
+                    let message = UserNotification.orderFailure.rawValue
+                    alertMessage.onNext(message)
+                })
+                .map({ _ in})
+                    
+        let strawberryPeachAction = input.strawberryPeachButtonTapped?
+                .flatMap({
+                    self.juiceMaker.makeJuice(StrawberryPeachJuice())
+                })
+                .do(onNext: { juice in
+                    let message = UserNotification.orderSucces(of: juice)
+                    alertMessage.onNext(message)
+                }, onError: { error in
+                    let message = UserNotification.orderFailure.rawValue
+                    alertMessage.onNext(message)
+                })
+                .map({ _ in})
+                                
+        let pineappleAction = input.pineappleButtonTapped?
+                .flatMap({
+                    self.juiceMaker.makeJuice(PineappleJuice())
+                })
+                .do(onNext: { juice in
+                    let message = UserNotification.orderSucces(of: juice)
+                    alertMessage.onNext(message)
+                }, onError: { error in
+                    let message = UserNotification.orderFailure.rawValue
+                    alertMessage.onNext(message)
+                })
+                .map({ _ in})
+                    
+        let watermelonAction = input.watermelonButtonTapped?
+                .flatMap({
+                    self.juiceMaker.makeJuice(WatermelonJuice())
+                })
+                .do(onNext: { juice in
+                    let message = UserNotification.orderSucces(of: juice)
+                    alertMessage.onNext(message)
+                }, onError: { error in
+                    let message = UserNotification.orderFailure.rawValue
+                    alertMessage.onNext(message)
+                })
+                .map({ _ in})
+                                                        
+        let watermelonPineappleAction = input.watermelonPineappleButtonTapped?
+                .flatMap({
+                    self.juiceMaker.makeJuice(PineappleWatermelonJuice())
+                })
+                .do(onNext: { juice in
+                    let message = UserNotification.orderSucces(of: juice)
+                    alertMessage.onNext(message)
+                }, onError: { error in
+                    let message = UserNotification.orderFailure.rawValue
+                    alertMessage.onNext(message)
+                })
+                .map({ _ in})
+                                                                    
+        let bananaAction = input.bananaButtonTapped?
+                .flatMap({
+                    self.juiceMaker.makeJuice(BananaJuice())
+                })
+                .do(onNext: { juice in
+                    let message = UserNotification.orderSucces(of: juice)
+                    alertMessage.onNext(message)
+                }, onError: { error in
+                    let message = UserNotification.orderFailure.rawValue
+                    alertMessage.onNext(message)
+                })
+                .map({ _ in})
+                    
+        let buttonSubscribe = Observable.merge(strawberryAction!, peachAction!, strawberryPeachAction!, pineappleAction!, watermelonAction!, watermelonPineappleAction!, bananaAction!)
+        .retry()
         
         return Output(strawberryStock: strawberryStock,
                       peachStock: peachStock,
                       pineappleStock: pineappleStock,
                       watermelonStock: watermelonStock,
                       bananaStock: bananaStock,
+                      buttonSubscribe: buttonSubscribe,
                       alertMessage: alertMessage)
     }
     
