@@ -55,7 +55,7 @@ final class FruitStockViewModel {
     private func transform(of fruit: Fruit, input: Input) -> Observable<String> {
         var initialStock: Observable<Int>
         var stepperValue: Observable<Int>
-        var stockUpdateResult: Observable<FruitStockModification>
+        var stockUpdateResult: Observable<Void>
         var updatedStock: Observable<String>
         
         initialStock = self.juiceMaker.fruitStockObservable(of: fruit).take(1)
@@ -88,19 +88,17 @@ final class FruitStockViewModel {
         
         updatedStock = stockUpdateResult
             .withUnretained(self)
-            .do(onNext: { (owner, result) in
-                if result == .deficientFruitStockFailure {
-                    self.userNotification.onNext(UserNotification())
-                }
-            })
-            .filter({ (owner, result) in
-                result == FruitStockModification.success
+            .do(onError: { _ in
+                self.userNotification.onNext(UserNotification())
             })
             .flatMap{ _ -> Observable<Int> in
                 self.juiceMaker.fruitStockObservable(of: fruit)
             }
             .map{String($0)}
-        
+            .retry(when: { _ in
+                stepperValue
+            })
+
         return updatedStock
     }
 }

@@ -84,21 +84,20 @@ struct JuiceMaker {
     func modifyFruitStock(
         of fruit: Fruit,
         with newValue: Int
-    ) -> Observable<FruitStockModification> {
+    ) -> Observable<Void> {
         let isAbleToModifyFruitStock = self.isAbleToModifyFruitStock(of: fruit, with: newValue)
         
         let fruitStockModification = isAbleToModifyFruitStock
-            .flatMap { bool -> Observable<FruitStockModification> in
-                if bool == true {
-                    return self.updateFruitRepository(of: fruit, with: newValue)
-                        .filter { bool in
-                            bool == true
-                        }
-                        .flatMap { _ in
-                            Observable<FruitStockModification>.just(.success)
-                        }
-                } else {
-                    return Observable<FruitStockModification>.just(.deficientFruitStockFailure)
+            .debug()
+            .flatMap { bool in
+                Observable<Void>.create { emitter in
+                    if bool == true {
+                        self.updateFruitRepository(of: fruit, with: newValue)
+                        emitter.onNext(())
+                    } else {
+                        emitter.onError(JuiceMakerError.fruitReductionFailure)
+                    }
+                    return Disposables.create()
                 }
             }
         return fruitStockModification
@@ -121,8 +120,8 @@ struct JuiceMaker {
     private func updateFruitRepository(
         of fruit: Fruit,
         with newValue: Int
-    ) -> Observable<Bool> {
-        return self.fruitRepository.update(fruit, with: newValue)
+    )  {
+        self.fruitRepository.update(fruit, with: newValue)
     }
     
 }
@@ -146,4 +145,5 @@ enum FruitStockModification: ObservableConvertibleType {
 enum JuiceMakerError: Error {
     
     case juiceProductionFailure
+    case fruitReductionFailure
 }

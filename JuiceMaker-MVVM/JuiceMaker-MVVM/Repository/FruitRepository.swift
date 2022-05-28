@@ -41,9 +41,8 @@ final class FruitRepository {
         return observable
     }
     
-    func update(_ fruit: Fruit, with newValue: Int) -> Observable<Bool> {
+    func update(_ fruit: Fruit, with newValue: Int) {
         self.storage.updateValue(newValue, forKey: fruit)
-        return Observable<Bool>.just(true)
     }
     
     func decrease(_ fruit: Fruit, by amount: Int) {
