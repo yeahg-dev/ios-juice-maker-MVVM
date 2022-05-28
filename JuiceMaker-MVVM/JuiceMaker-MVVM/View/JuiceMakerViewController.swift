@@ -85,7 +85,6 @@ class JuiceMakerViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.alertMessage
-            .debug()
             .subscribe(onNext: {string in
                 print(string)
         })

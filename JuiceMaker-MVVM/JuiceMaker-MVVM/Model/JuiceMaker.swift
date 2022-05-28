@@ -88,7 +88,6 @@ struct JuiceMaker {
         let isAbleToModifyFruitStock = self.isAbleToModifyFruitStock(of: fruit, with: newValue)
         
         let fruitStockModification = isAbleToModifyFruitStock
-            .debug()
             .flatMap { bool in
                 Observable<Void>.create { emitter in
                     if bool == true {
