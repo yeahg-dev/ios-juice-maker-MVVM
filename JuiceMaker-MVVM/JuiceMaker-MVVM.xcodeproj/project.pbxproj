@@ -55,40 +55,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6304BD69284372E900DCC45D /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				6304BD6A2843730200DCC45D /* JuiceMakerScene */,
+				6304BD6C2843732400DCC45D /* FruitStockModificationScene */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		6304BD6A2843730200DCC45D /* JuiceMakerScene */ = {
+			isa = PBXGroup;
+			children = (
+				63BE4E5F28368D1700E9608C /* JuiceMakerViewController.swift */,
+				63B9C46F2838710400220FFF /* JuiceMakerViewModel.swift */,
+			);
+			path = JuiceMakerScene;
+			sourceTree = "<group>";
+		};
+		6304BD6C2843732400DCC45D /* FruitStockModificationScene */ = {
+			isa = PBXGroup;
+			children = (
+				63B9C4722839347900220FFF /* FruitStockViewController.swift */,
+				63B9C4742839348C00220FFF /* FruitStockViewModel.swift */,
+			);
+			path = FruitStockModificationScene;
+			sourceTree = "<group>";
+		};
+		6304BD6E284374EC00DCC45D /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				63B9C46A2837DFE600220FFF /* FruitJuice.swift */,
+				63B9C4642837D66F00220FFF /* Fruit.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
 		63B9C4662837DE8900220FFF /* Repository */ = {
 			isa = PBXGroup;
 			children = (
 				63B9C4622837D64600220FFF /* FruitRepository.swift */,
-				63B9C4642837D66F00220FFF /* Fruit.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
 		};
-		63B9C4672837DF1C00220FFF /* Model */ = {
+		63B9C4672837DF1C00220FFF /* Usecase */ = {
 			isa = PBXGroup;
 			children = (
-				63B9C46A2837DFE600220FFF /* FruitJuice.swift */,
 				63B9C46C28386C4900220FFF /* JuiceMaker.swift */,
 			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		63B9C46E28386F4200220FFF /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				63B9C46F2838710400220FFF /* JuiceMakerViewModel.swift */,
-				63B9C4742839348C00220FFF /* FruitStockViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		63B9C47128387B2A00220FFF /* View */ = {
-			isa = PBXGroup;
-			children = (
-				63BE4E5F28368D1700E9608C /* JuiceMakerViewController.swift */,
-				63B9C4722839347900220FFF /* FruitStockViewController.swift */,
-			);
-			path = View;
+			path = Usecase;
 			sourceTree = "<group>";
 		};
 		63B9C4762839468100220FFF /* Assets */ = {
@@ -131,9 +147,9 @@
 			children = (
 				63BE4E6928368D1A00E9608C /* Info.plist */,
 				63B9C478283946B200220FFF /* App */,
-				63B9C47128387B2A00220FFF /* View */,
-				63B9C46E28386F4200220FFF /* ViewModel */,
-				63B9C4672837DF1C00220FFF /* Model */,
+				6304BD69284372E900DCC45D /* Presenter */,
+				63B9C4672837DF1C00220FFF /* Usecase */,
+				6304BD6E284374EC00DCC45D /* Entity */,
 				63B9C4662837DE8900220FFF /* Repository */,
 				63B9C4762839468100220FFF /* Assets */,
 			);
