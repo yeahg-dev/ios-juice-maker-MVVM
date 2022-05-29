@@ -35,7 +35,7 @@ struct JuiceMakerViewModel {
         let watermelonStock: PublishSubject<String>
         let bananaStock: PublishSubject<String>
         let buttonSubscribe: Observable<Void>
-        let alertMessage: PublishSubject<String>
+        let alertMessage: PublishSubject<JuiceMakerUserNotification>
     }
     
     // MARK: - bindViewModel
@@ -47,18 +47,24 @@ struct JuiceMakerViewModel {
         let watermelonStock = PublishSubject<String>()
         let bananaStock = PublishSubject<String>()
         
-        let alertMessage = PublishSubject<String>()
+        let alertMessage = PublishSubject<JuiceMakerUserNotification>()
         
         let strawberryAction = input.strawberryButtonTapped?
             .flatMap({
                 self.juiceMaker.makeJuice(StrawberryJuice())
             })
             .do(onNext: { juice in
-                let message = UserNotification.orderSucces(of: juice)
-                alertMessage.onNext(message)
+                let notificaiton = JuiceMakerUserNotification(
+                    title: UserNotification.orderSucces(of: juice),
+                    message: UserNotification.successMessage.rawValue,
+                    action: UserNotification.action.rawValue)
+                alertMessage.onNext(notificaiton)
             }, onError: { error in
-                let message = UserNotification.orderFailure.rawValue
-                alertMessage.onNext(message)
+               let notification = JuiceMakerUserNotification(
+                title: UserNotification.failureTitle.rawValue,
+                message: nil,
+                action: UserNotification.action.rawValue)
+                alertMessage.onNext(notification)
             })
             .map({ _ in})
         
@@ -67,11 +73,17 @@ struct JuiceMakerViewModel {
                     self.juiceMaker.makeJuice(PeachJuice())
                 })
                 .do(onNext: { juice in
-                    let message = UserNotification.orderSucces(of: juice)
-                    alertMessage.onNext(message)
+                    let notificaiton = JuiceMakerUserNotification(
+                        title: UserNotification.orderSucces(of: juice),
+                        message: UserNotification.successMessage.rawValue,
+                        action: UserNotification.action.rawValue)
+                    alertMessage.onNext(notificaiton)
                 }, onError: { error in
-                    let message = UserNotification.orderFailure.rawValue
-                    alertMessage.onNext(message)
+                    let notification = JuiceMakerUserNotification(
+                     title: UserNotification.failureTitle.rawValue,
+                     message: nil,
+                     action: UserNotification.action.rawValue)
+                     alertMessage.onNext(notification)
                 })
                 .map({ _ in})
                     
@@ -80,11 +92,17 @@ struct JuiceMakerViewModel {
                     self.juiceMaker.makeJuice(StrawberryPeachJuice())
                 })
                 .do(onNext: { juice in
-                    let message = UserNotification.orderSucces(of: juice)
-                    alertMessage.onNext(message)
+                    let notificaiton = JuiceMakerUserNotification(
+                        title: UserNotification.orderSucces(of: juice),
+                        message: UserNotification.successMessage.rawValue,
+                        action: UserNotification.action.rawValue)
+                    alertMessage.onNext(notificaiton)
                 }, onError: { error in
-                    let message = UserNotification.orderFailure.rawValue
-                    alertMessage.onNext(message)
+                    let notification = JuiceMakerUserNotification(
+                     title: UserNotification.failureTitle.rawValue,
+                     message: nil,
+                     action: UserNotification.action.rawValue)
+                     alertMessage.onNext(notification)
                 })
                 .map({ _ in})
                                 
@@ -93,11 +111,17 @@ struct JuiceMakerViewModel {
                     self.juiceMaker.makeJuice(PineappleJuice())
                 })
                 .do(onNext: { juice in
-                    let message = UserNotification.orderSucces(of: juice)
-                    alertMessage.onNext(message)
+                    let notificaiton = JuiceMakerUserNotification(
+                        title: UserNotification.orderSucces(of: juice),
+                        message: UserNotification.successMessage.rawValue,
+                        action: UserNotification.action.rawValue)
+                    alertMessage.onNext(notificaiton)
                 }, onError: { error in
-                    let message = UserNotification.orderFailure.rawValue
-                    alertMessage.onNext(message)
+                    let notification = JuiceMakerUserNotification(
+                     title: UserNotification.failureTitle.rawValue,
+                     message: nil,
+                     action: UserNotification.action.rawValue)
+                     alertMessage.onNext(notification)
                 })
                 .map({ _ in})
                     
@@ -106,11 +130,17 @@ struct JuiceMakerViewModel {
                     self.juiceMaker.makeJuice(WatermelonJuice())
                 })
                 .do(onNext: { juice in
-                    let message = UserNotification.orderSucces(of: juice)
-                    alertMessage.onNext(message)
+                    let notificaiton = JuiceMakerUserNotification(
+                        title: UserNotification.orderSucces(of: juice),
+                        message: UserNotification.successMessage.rawValue,
+                        action: UserNotification.action.rawValue)
+                    alertMessage.onNext(notificaiton)
                 }, onError: { error in
-                    let message = UserNotification.orderFailure.rawValue
-                    alertMessage.onNext(message)
+                    let notification = JuiceMakerUserNotification(
+                     title: UserNotification.failureTitle.rawValue,
+                     message: nil,
+                     action: UserNotification.action.rawValue)
+                     alertMessage.onNext(notification)
                 })
                 .map({ _ in})
                                                         
@@ -119,11 +149,17 @@ struct JuiceMakerViewModel {
                     self.juiceMaker.makeJuice(PineappleWatermelonJuice())
                 })
                 .do(onNext: { juice in
-                    let message = UserNotification.orderSucces(of: juice)
-                    alertMessage.onNext(message)
+                    let notificaiton = JuiceMakerUserNotification(
+                        title: UserNotification.orderSucces(of: juice),
+                        message: UserNotification.successMessage.rawValue,
+                        action: UserNotification.action.rawValue)
+                    alertMessage.onNext(notificaiton)
                 }, onError: { error in
-                    let message = UserNotification.orderFailure.rawValue
-                    alertMessage.onNext(message)
+                    let notification = JuiceMakerUserNotification(
+                     title: UserNotification.failureTitle.rawValue,
+                     message: nil,
+                     action: UserNotification.action.rawValue)
+                     alertMessage.onNext(notification)
                 })
                 .map({ _ in})
                                                                     
@@ -132,11 +168,17 @@ struct JuiceMakerViewModel {
                     self.juiceMaker.makeJuice(BananaJuice())
                 })
                 .do(onNext: { juice in
-                    let message = UserNotification.orderSucces(of: juice)
-                    alertMessage.onNext(message)
+                    let notificaiton = JuiceMakerUserNotification(
+                        title: UserNotification.orderSucces(of: juice),
+                        message: UserNotification.successMessage.rawValue,
+                        action: UserNotification.action.rawValue)
+                    alertMessage.onNext(notificaiton)
                 }, onError: { error in
-                    let message = UserNotification.orderFailure.rawValue
-                    alertMessage.onNext(message)
+                    let notification = JuiceMakerUserNotification(
+                     title: UserNotification.failureTitle.rawValue,
+                     message: nil,
+                     action: UserNotification.action.rawValue)
+                     alertMessage.onNext(notification)
                 })
                 .map({ _ in})
                     
@@ -180,11 +222,21 @@ struct JuiceMakerViewModel {
     
     enum UserNotification: String {
         
-        case orderSuccess
-        case orderFailure = "재료가 모자라요🥲"
+        case successTitile
+        case successMessage = "Enjoy!😛"
+        case failureTitle = "재료가 모자라요🥲"
+        case action = "확인"
         
         static func orderSucces(of juice: FruitJuice?) -> String {
-            "\(juice?.name ?? "") 나왔습니다~🧃"
+            "\(juice?.name ?? "") 나왔습니다"
         }
     }
+    
+}
+
+struct JuiceMakerUserNotification {
+    
+    var title: String?
+    var message: String?
+    var action: String?
 }

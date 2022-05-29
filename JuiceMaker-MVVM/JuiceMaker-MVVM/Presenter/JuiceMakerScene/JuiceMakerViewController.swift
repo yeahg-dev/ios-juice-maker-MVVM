@@ -90,8 +90,8 @@ class JuiceMakerViewController: UIViewController {
         
         output.alertMessage
             .withUnretained(self)
-            .subscribe(onNext: { (self, message) in
-                self.presentAlert(title: message)
+            .subscribe(onNext: { (self, notifiactioin) in
+                self.presentAlert(title: notifiactioin.title, message: notifiactioin.message, action: notifiactioin.action)
         })
         .disposed(by: disposeBag)
         
@@ -100,9 +100,9 @@ class JuiceMakerViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func presentAlert(title: String) {
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        let OkAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+    private func presentAlert(title: String?, message: String?, action: String?) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let OkAction = UIAlertAction(title: action, style: .default, handler: nil)
         alertController.addAction(OkAction)
         
         self.present(alertController, animated: true)
