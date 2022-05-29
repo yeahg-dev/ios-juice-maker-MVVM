@@ -184,7 +184,7 @@ struct JuiceMakerViewModel {
         case orderFailure = "재료가 모자라요🥲"
         
         static func orderSucces(of juice: FruitJuice?) -> String {
-            "\(juice?.name ?? "") 나왔습니다"
+            "\(juice?.name ?? "") 나왔습니다~🧃"
         }
     }
 }

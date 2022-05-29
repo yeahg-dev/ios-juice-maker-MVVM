@@ -55,25 +55,29 @@ class JuiceMakerViewController: UIViewController {
         let output = juiceMakerViewModel.transfrom(input: input)
         
         output.strawberryStock
-            .subscribe(onNext: {stock in
+            .withUnretained(self)
+            .subscribe(onNext: { (self, stock) in
                 self.strawberryStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
         
         output.peachStock
-            .subscribe(onNext: {stock in
+            .withUnretained(self)
+            .subscribe(onNext: { (self, stock) in
                 self.peachStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
         
         output.pineappleStock
-            .subscribe(onNext: {stock in
+            .withUnretained(self)
+            .subscribe(onNext: { (self, stock) in
                 self.pineappleStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
         
         output.watermelonStock
-            .subscribe(onNext: {stock in
+            .withUnretained(self)
+            .subscribe(onNext: { (self, stock) in
                 self.watermelonStockLabel?.text = stock
             })
             .disposed(by: disposeBag)
@@ -85,8 +89,9 @@ class JuiceMakerViewController: UIViewController {
             .disposed(by: disposeBag)
         
         output.alertMessage
-            .subscribe(onNext: {string in
-                print(string)
+            .withUnretained(self)
+            .subscribe(onNext: { (self, message) in
+                self.presentAlert(title: message)
         })
         .disposed(by: disposeBag)
         
@@ -95,5 +100,12 @@ class JuiceMakerViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    private func presentAlert(title: String) {
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        let OkAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alertController.addAction(OkAction)
+        
+        self.present(alertController, animated: true)
+    }
 }
 
