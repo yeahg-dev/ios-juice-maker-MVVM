@@ -49,29 +49,6 @@ struct JuiceMakerViewModel {
         
         let alertMessage = PublishSubject<String>()
         
-        input.viewWillAppear.subscribe(onNext:{
-            self.fruitStock(of: .strawberry)
-                .bind{ stock in
-                    strawberryStock.onNext(stock)
-                }.dispose()
-            self.fruitStock(of: .peach)
-                .bind{ stock in
-                    peachStock.onNext(stock)
-                }.dispose()
-            self.fruitStock(of: .pineapple)
-                .bind{ stock in
-                    pineappleStock.onNext(stock)
-                }.dispose()
-            self.fruitStock(of: .watermelon)
-                .bind{ stock in
-                    watermelonStock.onNext(stock)
-                }.dispose()
-            self.fruitStock(of: .banana)
-                .bind{ stock in
-                    bananaStock.onNext(stock)
-                }.dispose()
-        }).disposed(by: disposeBag)
-        
         let strawberryAction = input.strawberryButtonTapped?
             .flatMap({
                 self.juiceMaker.makeJuice(StrawberryJuice())
@@ -163,9 +140,29 @@ struct JuiceMakerViewModel {
                 })
                 .map({ _ in})
                     
-        let buttonSubscribe = Observable.merge(strawberryAction!, peachAction!, strawberryPeachAction!, pineappleAction!, watermelonAction!, watermelonPineappleAction!, bananaAction!)
+        let buttonSubscribe = Observable.merge(input.viewWillAppear, strawberryAction!, peachAction!, strawberryPeachAction!, pineappleAction!, watermelonAction!, watermelonPineappleAction!, bananaAction!)
+                    .do(onNext: { self.fruitStock(of: .strawberry)
+                            .bind{ stock in
+                                strawberryStock.onNext(stock)
+                            }.dispose()
+                        self.fruitStock(of: .peach)
+                            .bind{ stock in
+                                peachStock.onNext(stock)
+                            }.dispose()
+                        self.fruitStock(of: .pineapple)
+                            .bind{ stock in
+                                pineappleStock.onNext(stock)
+                            }.dispose()
+                        self.fruitStock(of: .watermelon)
+                            .bind{ stock in
+                                watermelonStock.onNext(stock)
+                            }.dispose()
+                        self.fruitStock(of: .banana)
+                            .bind{ stock in
+                                bananaStock.onNext(stock)
+                            }.dispose()})
         .retry()
-        
+
         return Output(strawberryStock: strawberryStock,
                       peachStock: peachStock,
                       pineappleStock: pineappleStock,
