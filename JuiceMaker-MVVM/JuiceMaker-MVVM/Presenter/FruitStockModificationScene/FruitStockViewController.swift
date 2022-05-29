@@ -52,7 +52,7 @@ class FruitStockViewController: UIViewController {
         output.notificationObservable?
             .subscribe { userNotification in
                 let notification = userNotification.element
-                print("\(String(describing: notification?.title))")
+                self.presentAlert(title: notification?.title, action: notification?.ok)
             }.disposed(by: disposeBag)
         
         output.strawberryStockObservable?
@@ -91,6 +91,14 @@ class FruitStockViewController: UIViewController {
                 
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func presentAlert(title: String?, action: String?) {
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        let OkAction = UIAlertAction(title: action, style: .default, handler: nil)
+        alertController.addAction(OkAction)
+        
+        self.present(alertController, animated: true)
     }
     
     // MARK: - @IBAction

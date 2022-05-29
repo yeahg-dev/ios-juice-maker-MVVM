@@ -104,6 +104,6 @@ final class FruitStockViewModel {
 }
 
 struct UserNotification {
-    var title = "더 이상 줄일 수 없어요"
+    var title = "더 이상 줄일 수 없어요😰"
     var ok = "확인"
 }
