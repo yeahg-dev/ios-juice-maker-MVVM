@@ -14,7 +14,6 @@ struct JuiceMaker {
     // MARK: - Property
     
     private let fruitRepository = FruitRepository.shared
-    private let disposeBag = DisposeBag()
     
     // MARK: - Business Logic
     
