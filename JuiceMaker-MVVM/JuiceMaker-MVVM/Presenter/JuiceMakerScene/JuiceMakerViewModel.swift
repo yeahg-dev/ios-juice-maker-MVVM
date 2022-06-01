@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 struct JuiceMakerViewModel {
     
@@ -59,6 +60,7 @@ struct JuiceMakerViewModel {
                 alertMessage.onNext(notification)
             })
             .map({ _ in})
+            .retry()
         
         let peachAction = input.peachButtonTapped?
                 .flatMap({
@@ -97,6 +99,7 @@ struct JuiceMakerViewModel {
                      alertMessage.onNext(notification)
                 })
                 .map({ _ in})
+                .retry()
                                 
         let pineappleAction = input.pineappleButtonTapped?
                 .flatMap({
@@ -116,6 +119,7 @@ struct JuiceMakerViewModel {
                      alertMessage.onNext(notification)
                 })
                 .map({ _ in})
+                .retry()
                     
         let watermelonAction = input.watermelonButtonTapped?
                 .flatMap({
@@ -135,6 +139,7 @@ struct JuiceMakerViewModel {
                      alertMessage.onNext(notification)
                 })
                 .map({ _ in})
+                .retry()
                                                         
         let watermelonPineappleAction = input.watermelonPineappleButtonTapped?
                 .flatMap({
@@ -154,6 +159,7 @@ struct JuiceMakerViewModel {
                      alertMessage.onNext(notification)
                 })
                 .map({ _ in})
+                .retry()
                                                                     
         let bananaAction = input.bananaButtonTapped?
                 .flatMap({
@@ -173,6 +179,7 @@ struct JuiceMakerViewModel {
                      alertMessage.onNext(notification)
                 })
                 .map({ _ in})
+                .retry()
 
         let strawberryStock = Observable.merge(input.viewWillAppear, strawberryAction!, strawberryPeachAction!)
             .flatMap { _ in
