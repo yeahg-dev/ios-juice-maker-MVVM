@@ -94,10 +94,7 @@ class JuiceMakerViewController: UIViewController {
                 self.presentAlert(title: notifiactioin.title, message: notifiactioin.message, action: notifiactioin.action)
         })
         .disposed(by: disposeBag)
-        
-        output.buttonSubscribe
-            .subscribe()
-            .disposed(by: disposeBag)
+
     }
     
     private func presentAlert(title: String?, message: String?, action: String?) {

@@ -13,7 +13,6 @@ struct JuiceMakerViewModel {
     // MARK: - Property
     
     private let juiceMaker = JuiceMaker()
-    private let disposeBag = DisposeBag()
     
     // MARK: - Input/Output
     
@@ -29,24 +28,17 @@ struct JuiceMakerViewModel {
     }
     
     struct Output {
-        let strawberryStock: PublishSubject<String>
-        let peachStock: PublishSubject<String>
-        let pineappleStock: PublishSubject<String>
-        let watermelonStock: PublishSubject<String>
-        let bananaStock: PublishSubject<String>
-        let buttonSubscribe: Observable<Void>
+        let strawberryStock: Observable<String>
+        let peachStock: Observable<String>
+        let pineappleStock: Observable<String>
+        let watermelonStock: Observable<String>
+        let bananaStock: Observable<String>
         let alertMessage: PublishSubject<JuiceMakerUserNotification>
     }
     
     // MARK: - bindViewModel
     
     func transfrom(input: Input) -> Output {
-        let strawberryStock = PublishSubject<String>()
-        let peachStock = PublishSubject<String>()
-        let pineappleStock = PublishSubject<String>()
-        let watermelonStock = PublishSubject<String>()
-        let bananaStock = PublishSubject<String>()
-        
         let alertMessage = PublishSubject<JuiceMakerUserNotification>()
         
         let strawberryAction = input.strawberryButtonTapped?
@@ -181,36 +173,37 @@ struct JuiceMakerViewModel {
                      alertMessage.onNext(notification)
                 })
                 .map({ _ in})
-                    
-        let buttonSubscribe = Observable.merge(input.viewWillAppear, strawberryAction!, peachAction!, strawberryPeachAction!, pineappleAction!, watermelonAction!, watermelonPineappleAction!, bananaAction!)
-                    .do(onNext: { self.fruitStock(of: .strawberry)
-                            .bind{ stock in
-                                strawberryStock.onNext(stock)
-                            }.dispose()
-                        self.fruitStock(of: .peach)
-                            .bind{ stock in
-                                peachStock.onNext(stock)
-                            }.dispose()
-                        self.fruitStock(of: .pineapple)
-                            .bind{ stock in
-                                pineappleStock.onNext(stock)
-                            }.dispose()
-                        self.fruitStock(of: .watermelon)
-                            .bind{ stock in
-                                watermelonStock.onNext(stock)
-                            }.dispose()
-                        self.fruitStock(of: .banana)
-                            .bind{ stock in
-                                bananaStock.onNext(stock)
-                            }.dispose()})
-        .retry()
 
+        let strawberryStock = Observable.merge(input.viewWillAppear, strawberryAction!, strawberryPeachAction!)
+            .flatMap { _ in
+                self.fruitStock(of: .strawberry)
+            }
+        
+        let peachStock = Observable.merge(input.viewWillAppear, peachAction!, strawberryPeachAction!)
+            .flatMap { _ in
+                self.fruitStock(of: .peach)
+            }
+        
+        let pineappleStock = Observable.merge(input.viewWillAppear, pineappleAction!, watermelonPineappleAction!)
+            .flatMap { _ in
+                self.fruitStock(of: .pineapple)
+            }
+        
+        let watermelonStock = Observable.merge(input.viewWillAppear, watermelonAction!, watermelonPineappleAction!)
+            .flatMap { _ in
+                self.fruitStock(of: .watermelon)
+            }
+        
+        let bananaStock = Observable.merge(input.viewWillAppear, bananaAction!)
+            .flatMap { _ in
+                self.fruitStock(of: .banana)
+            }
+        
         return Output(strawberryStock: strawberryStock,
                       peachStock: peachStock,
                       pineappleStock: pineappleStock,
                       watermelonStock: watermelonStock,
                       bananaStock: bananaStock,
-                      buttonSubscribe: buttonSubscribe,
                       alertMessage: alertMessage)
     }
     
