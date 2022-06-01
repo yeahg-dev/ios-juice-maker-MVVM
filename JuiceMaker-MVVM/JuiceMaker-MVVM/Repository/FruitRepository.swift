@@ -18,7 +18,7 @@ final class FruitRepository {
     
     // MARK: - Method
     
-    init(defaultFruitStock: Int) {
+    private init(defaultFruitStock: Int) {
         for fruit in Fruit.allCases {
             storage.updateValue(defaultFruitStock, forKey: fruit)
         }
