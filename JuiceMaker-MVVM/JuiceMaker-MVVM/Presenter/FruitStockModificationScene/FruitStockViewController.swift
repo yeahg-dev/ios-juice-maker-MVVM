@@ -103,6 +103,10 @@ class FruitStockViewController: UIViewController {
     
     // MARK: - @IBAction
     @IBAction func tappedDoneButton(_ sender: Any) {
+        guard let navigationViewController = self.presentingViewController as? UINavigationController, let juiceMakerViewController = navigationViewController.viewControllers[0] as? FruitStockViewControllerDelegate else {
+            return
+        }
+        juiceMakerViewController.didDismiss(self)
         self.dismiss(animated: true)
     }
     

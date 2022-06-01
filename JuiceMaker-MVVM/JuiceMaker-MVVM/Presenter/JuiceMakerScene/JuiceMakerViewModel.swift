@@ -19,6 +19,7 @@ struct JuiceMakerViewModel {
     
     struct Input {
         let viewWillAppear: Observable<Void>
+        let presentedViewDismissed: Observable<Void>
         let strawberryButtonTapped: Observable<Void>?
         let peachButtonTapped: Observable<Void>?
         let strawberryPeachButtonTapped: Observable<Void>?
@@ -181,27 +182,27 @@ struct JuiceMakerViewModel {
                 .map({ _ in})
                 .retry()
 
-        let strawberryStock = Observable.merge(input.viewWillAppear, strawberryAction!, strawberryPeachAction!)
+        let strawberryStock = Observable.merge(input.viewWillAppear, input.presentedViewDismissed, strawberryAction!, strawberryPeachAction!)
             .flatMap { _ in
                 self.fruitStock(of: .strawberry)
             }
         
-        let peachStock = Observable.merge(input.viewWillAppear, peachAction!, strawberryPeachAction!)
+        let peachStock = Observable.merge(input.viewWillAppear, input.presentedViewDismissed, peachAction!, strawberryPeachAction!)
             .flatMap { _ in
                 self.fruitStock(of: .peach)
             }
         
-        let pineappleStock = Observable.merge(input.viewWillAppear, pineappleAction!, watermelonPineappleAction!)
+        let pineappleStock = Observable.merge(input.viewWillAppear, input.presentedViewDismissed, pineappleAction!, watermelonPineappleAction!)
             .flatMap { _ in
                 self.fruitStock(of: .pineapple)
             }
         
-        let watermelonStock = Observable.merge(input.viewWillAppear, watermelonAction!, watermelonPineappleAction!)
+        let watermelonStock = Observable.merge(input.viewWillAppear, input.presentedViewDismissed, watermelonAction!, watermelonPineappleAction!)
             .flatMap { _ in
                 self.fruitStock(of: .watermelon)
             }
         
-        let bananaStock = Observable.merge(input.viewWillAppear, bananaAction!)
+        let bananaStock = Observable.merge(input.viewWillAppear, input.presentedViewDismissed, bananaAction!)
             .flatMap { _ in
                 self.fruitStock(of: .banana)
             }

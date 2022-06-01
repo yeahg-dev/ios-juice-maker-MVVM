@@ -45,6 +45,7 @@ class JuiceMakerViewController: UIViewController {
         
         let input = JuiceMakerViewModel.Input(
             viewWillAppear: self.rx.methodInvoked(#selector(UIViewController.viewWillAppear(_:))).map{_ in},
+            presentedViewDismissed: self.rx.methodInvoked(#selector(JuiceMakerViewController.presentedViewControllerDidDismissed)).map{_ in}.debug(),
             strawberryButtonTapped: self.strawberryJuiceButton?.rx.tap.asObservable(),
             peachButtonTapped: self.peachJuiceButton?.rx.tap.asObservable(),
             strawberryPeachButtonTapped: self.strawberryPeachJuiceButton?.rx.tap.asObservable(),
@@ -104,5 +105,22 @@ class JuiceMakerViewController: UIViewController {
         
         self.present(alertController, animated: true)
     }
+    
+    @objc private func presentedViewControllerDidDismissed() {
+        return
+    }
 }
 
+protocol FruitStockViewControllerDelegate {
+    
+    func didDismiss(_: UIViewController)
+}
+
+extension JuiceMakerViewController: FruitStockViewControllerDelegate {
+    
+    
+    func didDismiss(_: UIViewController) {
+        self.presentedViewControllerDidDismissed()
+    }
+    
+}
