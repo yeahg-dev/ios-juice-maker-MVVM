@@ -106,7 +106,7 @@ class JuiceMakerViewController: UIViewController {
         self.present(alertController, animated: true)
     }
     
-    @objc private func presentedViewControllerDidDismissed() {
+    @objc dynamic private func presentedViewControllerDidDismissed() {
         return
     }
 }
