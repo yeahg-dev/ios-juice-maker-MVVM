@@ -73,6 +73,7 @@ Input/Ouput 구조를 사용하면 아래와 같은 장점이 있다고 생각�
 - 통일된 구조로 구현하기 때문에 가독성이 좋다
 - 인풋과 아웃풋을 하나의 타입으로 관리함으로써 관리하기 용이하다
 
+**적용 코드 ⬇️**
 ```swift
 //  JuiceMakerViewModel.swift
 
@@ -108,14 +109,54 @@ Input/Ouput 구조를 사용하면 아래와 같은 장점이 있다고 생각�
 <br>
 
 ### `retry`를 사용한 에러 핸들링
-Observable 스트림에서 에러가 방출되면 해당 스트림은 종료됩니다. 뷰로 부터 사용자 이벤트 받는 스트림에서 에러가 방출되면, 스트림은 종료되고 더 이상 이벤트를 받을 수 없게됩니다. 
+Observable 스트림에서 에러가 방출되면 해당 스트림은 종료됩니다. 계속해서 뷰로 인풋을 받아야하는 스트림에서 에러가 방출되면, 스트림은 종료되고 더 이상 이벤트를 받을 수 없게됩니다. 
 
-`retry`연산자는 에러가 방출되면 에러를 내보낸 후 스트림을 dispose하고 **다시 `subscribe`를 호출**합니다. `retry`를 사용하면 에러가 방출되어도 계속해서 사용자 이벤트를 받을 수 있습니다.
+이 같은 상황에서 에러가 방출된 시점 후에 `retry`연산자를 호출하면 스트림을 종료시키지 않고 이어나갈 수 있습니다. 
+
+`retry`연산자는 에러가 방출되면 스트림을 dispose하고 **다시 `subscribe`를 호출**합니다. 따라서 에러가 방출되어도 계속해서 사용자 이벤트를 받을 수 있습니다.
+
+**적용 코드 ⬇️**
+```swift
+// FruiStockViewModel.swift 
+
+ private func transform(of fruit: Fruit, input: Input) -> Observable<String> {
+        var initialStock: Observable<Int>
+        var stepperValue: Observable<Int>
+        var stockUpdateResult: Observable<Void>
+        var updatedStock: Observable<String>
+        
+        ...
+        
+        stockUpdateResult = Observable<Int>
+            .combineLatest(initialStock, stepperValue){ $0 + $1}
+            .flatMap {
+            self.juiceMaker.modifyFruitStock(of: fruit, with: $0)
+            }
+            .share(replay: 1)
+        
+        updatedStock = stockUpdateResult
+            .withUnretained(self)
+            .do(onError: { _ in
+                self.userNotification.onNext(UserNotification())
+            })
+            .flatMap{ _ -> Observable<Int> in
+                self.juiceMaker.fruitStockObservable(of: fruit)
+            }
+            .map{String($0)}
+            .retry(when: { _ in
+                stepperValue
+            })
+
+        return updatedStock
+    }
+}
+```
+재고가 0이하로 수정되려는 시도가 일어날 때 `fruitReductionFailure`에러가 방출됩니다. `retry(when:)` 연산자를 활용, 스테퍼 인풋이 들어올 때(`steppValue`시퀀스가 생성) 재구독하여 스트림이 종료되지 않도록 해결했습니다.
 
 <br>
 
 ### 메서드 호출로 Observable sequence 생성하기
-뷰의 라이프 사이클에 대응해 새로운 옵저버블 시퀀스를 생성해야하는 경우나 특정 메서드를 trigger로 새로운 시퀀스를 생성해야하는 경우  rxExtension의 `func methodInvoked(_ selector: Selector) -> Observable<[Any]>`을 활용할 수 있습니다.
+뷰 라이프 사이클 이벤트가 발생할 때 새로운 옵저버블 시퀀스를 생성해야하는 경우, 특정 메서드를 trigger로 새로운 시퀀스를 생성해야하는 경우  rxExtension의 `func methodInvoked(_ selector: Selector) -> Observable<[Any]>`을 활용했습니다.
 
 ```swift
 let input = JuiceMakerViewModel.Input(
